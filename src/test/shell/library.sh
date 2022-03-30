@@ -55,7 +55,9 @@ getBlockInfo() {
 }
 
 testManageUser() {
-	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:createUser","Args":["8","Joe Biden","M","1942","jbiden@whitehouse.gov","Executive","0","NORMAL", "0", "0"]}'
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:createUser","Args":["8","Joe Biden","M","1942","jbiden@whitehouse.gov","Executive","0","NORMAL", "0", "0"]}' || fail || return
+
+	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
 
 	output=$(peer chaincode query -C mychannel -n library -c '{"function":"ManageUserCRUDServiceImpl:queryUser","Args":["8"]}')
 	assertContains "$output" "Joe Biden"
@@ -65,7 +67,9 @@ testManageUser() {
 	assertContains "$output" "NORMAL"
 	assertContains "$output" "0"
 
-	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:modifyUser","Args":["8","Donald Trump","F","1946","dtrump@whitehouse.gov","Legislature","0","SUSPEND", "0", "0"]}'
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:modifyUser","Args":["8","Donald Trump","F","1946","dtrump@whitehouse.gov","Legislature","0","SUSPEND", "0", "0"]}' || fail || return
+
+	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
 
 	output=$(peer chaincode query -C mychannel -n library -c '{"function":"ManageUserCRUDServiceImpl:queryUser","Args":["8"]}')
 	assertContains "$output" "Donald Trump"
@@ -76,6 +80,12 @@ testManageUser() {
 	assertContains "$output" "0"
 
 	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:deleteUser","Args":["8"]}'
+
+	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
+
+	if pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:deleteUser","Args":["8"]}'; then
+		fail || return
+	fi
 }
 
 source shunit2
