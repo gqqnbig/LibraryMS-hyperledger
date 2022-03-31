@@ -139,6 +139,11 @@ testManageStudent() {
 
 testManageFaculty() {
 	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:createFaculty","Args":["100","Eggert","M","998","eggert@ucla.edu","engineering","CHAIRPROFESSOR","INPOSITION"]}' || fail || return
+	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
+
+	if pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:createFaculty","Args":["100","Eggert","M","998","eggert@ucla.edu","engineering","CHAIRPROFESSOR","INPOSITION"]}'; then
+		fail || return
+	fi
 
 	output=$(peer chaincode query -C mychannel -n library -c '{"function":"ManageUserCRUDServiceImpl:queryUser","Args":["100"]}')
 	assertContains "$output" "Eggert"
@@ -147,6 +152,7 @@ testManageFaculty() {
 	assertContains "$output" "engineering"
 
 	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:modifyFaculty","Args":["100","Paul Eggert","F","998","paul@ucla.edu","arts", "_", "ASSOCIATEPROFESSOR","HASRETIRED"]}' || fail || return
+	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
 
 	output=$(peer chaincode query -C mychannel -n library -c '{"function":"ManageUserCRUDServiceImpl:queryUser","Args":["100"]}')
 	assertContains "$output" "Paul"
@@ -154,6 +160,10 @@ testManageFaculty() {
 	assertContains "$output" "arts"
 
 	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:deleteUser","Args":["100"]}'
+
+	if pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:deleteUser","Args":["100"]}'; then
+		fail || return
+	fi
 }
 
 source shunit2
