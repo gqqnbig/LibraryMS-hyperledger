@@ -59,6 +59,10 @@ testManageUser() {
 
 	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
 
+	if peer chaincode query -C mychannel -n library -c '{"function":"ManageUserCRUDServiceImpl:queryUser","Args":["2"]}'; then
+		fail || return
+	fi
+
 	output=$(peer chaincode query -C mychannel -n library -c '{"function":"ManageUserCRUDServiceImpl:queryUser","Args":["8"]}')
 	assertContains "$output" "Joe Biden"
 	assertContains "$output" "1942"
@@ -84,6 +88,10 @@ testManageUser() {
 	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
 
 	if pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:deleteUser","Args":["8"]}'; then
+		fail || return
+	fi
+
+	if pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:deleteUser","Args":["1"]}'; then
 		fail || return
 	fi
 }
