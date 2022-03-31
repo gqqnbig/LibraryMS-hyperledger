@@ -222,6 +222,10 @@ public class EntityManager {
 	}
 	
 	public static boolean addUserObject(User o) {
+		//If o is a derived class of User, then we have to save o to its concrete class.
+		if (o.getClass().equals(User.class) == false)
+			return false;
+
 		List<User> list = loadList(User.class);
 		if (list.add(o)) {
 			String json = genson.serialize(list);
@@ -572,6 +576,15 @@ public class EntityManager {
 
 	public static <T> List<T> getAllInstancesOf(Class<T> clazz) {
 		List<T> list = loadList(clazz);
+
+		if(clazz.equals(User.class)) {
+			var a = loadList(Student.class);
+			list.addAll((Collection<? extends T>) a);
+
+			var b = loadList(Faculty.class);
+			list.addAll((Collection<? extends T>) b);
+		}
+
 		return list;
 	}
 
@@ -750,11 +763,24 @@ public class EntityManager {
 		return null;
 	}
 
+	/**
+	 * will also save super classes of the given class.
+	 * <p>
+	 * If an instance is modified and to be saved, this instance can at most appear in the list of its class
+	 * and of its super classes. To be on the safe side, this method saves all related lists.
+	 */
 	public static <T> boolean saveModified(Class<T> clazz) {
 		List<T> list = loadList(clazz);
 		String json = genson.serialize(list);
 		stub.putStringState(clazz.getSimpleName(), json);
-		return true;
+
+		var superClass = clazz.getSuperclass();
+		if (superClass != null)
+			System.out.println("saveModified: superclass is " + superClass.getName());
+		if (superClass == null || superClass.getName().contains("entities.") == false)
+			return true;
+		else
+			return saveModified(superClass);
 	}
 }
 
