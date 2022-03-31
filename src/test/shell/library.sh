@@ -101,4 +101,27 @@ testCreateDeleteStudent() {
 	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:deleteUser","Args":["2"]}'
 }
 
+testManageStudent() {
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:createStudent","Args":["2","hello","F","123","aa","bb","cc","BACHELOR", "PROGRAMMING"]}' || fail || return
+
+	#	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
+
+	output=$(peer chaincode query -C mychannel -n library -c '{"function":"ManageUserCRUDServiceImpl:queryUser","Args":["2"]}')
+	assertContains "$output" "hello"
+	assertContains "$output" "123"
+	assertContains "$output" "aa"
+	assertContains "$output" "bb"
+
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:modifyStudent","Args":["2","world","M","456","dd","ee","ff","PHD", "GRADUATED"]}' || fail || return
+
+	output=$(peer chaincode query -C mychannel -n library -c '{"function":"ManageUserCRUDServiceImpl:queryUser","Args":["2"]}')
+	assertContains "$output doesn't contain required string." "$output" "world"
+	assertContains "$output" "M"
+	assertContains "$output" "456"
+	assertContains "$output" "dd"
+	assertContains "$output" "ee"
+
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:deleteUser","Args":["2"]}'
+}
+
 source shunit2
