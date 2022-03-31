@@ -316,10 +316,10 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 		if (StandardOPs.oclIsundefined(user) == false && StandardOPs.includes(((List<User>)EntityManager.getAllInstancesOf(User.class)), user)) 
 		{ 
 			/* Logic here */
+			System.out.println("EntityManager.deleteUser " + user);
 			EntityManager.deleteObject("User", user);
-			
-			
-			;
+
+			EntityManager.getAllInstancesOf(User.class).forEach(u -> System.out.printf("User:%s\n", u));
 			// post-condition checking
 			if (!(StandardOPs.excludes(((List<User>)EntityManager.getAllInstancesOf(User.class)), user)
 			 && 
