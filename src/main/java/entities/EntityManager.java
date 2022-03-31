@@ -240,13 +240,20 @@ public class EntityManager {
 	}
 	
 	public static boolean deleteUserObject(User o) {
+		boolean res = false;
+		if (o instanceof Student)
+			res = deleteStudentObject((Student) o);
+		if (o instanceof Faculty)
+			res = deleteFacultyObject((Faculty) o);
+
 		List<User> list = loadList(User.class);
 		if (list.remove(o)) {
+			System.out.printf("Deleted %s from User\n", o);
 			String json = genson.serialize(list);
 			stub.putStringState("User", json);
 			return true;
 		} else
-			return false;
+			return res;
 	}
 	
 	public static boolean deleteUserObjects(List<User> os) {
@@ -274,6 +281,7 @@ public class EntityManager {
 	public static boolean deleteStudentObject(Student o) {
 		List<Student> list = loadList(Student.class);
 		if (list.remove(o)) {
+			System.out.printf("Deleted %s from Student\n", o);
 			String json = genson.serialize(list);
 			stub.putStringState("Student", json);
 			return true;
@@ -306,6 +314,7 @@ public class EntityManager {
 	public static boolean deleteFacultyObject(Faculty o) {
 		List<Faculty> list = loadList(Faculty.class);
 		if (list.remove(o)) {
+			System.out.printf("Deleted %s from Faculty\n", o);
 			String json = genson.serialize(list);
 			stub.putStringState("Faculty", json);
 			return true;
@@ -577,7 +586,8 @@ public class EntityManager {
 	public static <T> List<T> getAllInstancesOf(Class<T> clazz) {
 		List<T> list = loadList(clazz);
 
-		if(clazz.equals(User.class)) {
+		if (clazz.equals(User.class)) {
+			list = new ArrayList<>(list);
 			var a = loadList(Student.class);
 			list.addAll((Collection<? extends T>) a);
 
@@ -588,6 +598,10 @@ public class EntityManager {
 		return list;
 	}
 
+	/**
+	 * Load list of exact tpe clazz.
+	 * Derived classes don't get loaded.
+	 */
 	private static <T> List<T> loadList(Class<T> clazz) {
 		String key = clazz.getSimpleName();
 		List<T> list = AllInstance.get(key);
