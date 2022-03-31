@@ -96,4 +96,9 @@ testManageUser() {
 	fi
 }
 
+testCreateDeleteStudent() {
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:createStudent","Args":["2","hello","F","123","aa","bb","cc","BACHELOR", "PROGRAMMING"]}' || fail || return
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:deleteUser","Args":["2"]}'
+}
+
 source shunit2
