@@ -137,4 +137,23 @@ testManageStudent() {
 	fi
 }
 
+testManageFaculty() {
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:createFaculty","Args":["100","Eggert","M","998","eggert@ucla.edu","engineering","CHAIRPROFESSOR","INPOSITION"]}' || fail || return
+
+	output=$(peer chaincode query -C mychannel -n library -c '{"function":"ManageUserCRUDServiceImpl:queryUser","Args":["100"]}')
+	assertContains "$output" "Eggert"
+	assertContains "$output" "998"
+	assertContains "$output" "eggert@ucla.edu"
+	assertContains "$output" "engineering"
+
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:modifyFaculty","Args":["100","Paul Eggert","F","998","paul@ucla.edu","arts", "_", "ASSOCIATEPROFESSOR","HASRETIRED"]}' || fail || return
+
+	output=$(peer chaincode query -C mychannel -n library -c '{"function":"ManageUserCRUDServiceImpl:queryUser","Args":["100"]}')
+	assertContains "$output" "Paul"
+	assertContains "$output" "paul@ucla.edu"
+	assertContains "$output" "arts"
+
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:deleteUser","Args":["100"]}'
+}
+
 source shunit2
