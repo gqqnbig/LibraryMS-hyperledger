@@ -288,4 +288,16 @@ testSearchBook() {
 	assertNotEquals "[]" "$output"
 }
 
+testSearchBookByBarCode() {
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageBookCRUDServiceImpl:createBook","Args":["1","Harry Potter","special","J. K. Rowling","Bloomsbury","fantasy novel","0545010225","2"]}' || fail || return
+
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageBookCopyCRUDServiceImpl:addBookCopy","Args":["1","1001","F1"]}'
+
+	output=$(peer chaincode query -C mychannel -n library -c '{"function":"SearchBookImpl:searchBookByBarCode","Args":["1000"]}')
+	assertEquals "[]" "$output"
+
+	output=$(peer chaincode query -C mychannel -n library -c '{"function":"SearchBookImpl:searchBookByBarCode","Args":["1001"]}')
+	assertNotEquals "[]" "$output"
+}
+
 source shunit2
