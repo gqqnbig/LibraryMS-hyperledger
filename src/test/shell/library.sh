@@ -269,4 +269,20 @@ testSearchBookNoBooks() {
 	peer chaincode query -C mychannel -n library -c '{"function":"SearchBookImpl:searchBookBySubject","Args":["666"]}' || fail || return
 }
 
+testSearchBook() {
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageBookCRUDServiceImpl:createBook","Args":["1","Harry Potter","special","J. K. Rowling","Bloomsbury","fantasy novel","0545010225","2"]}' || fail || return
+
+	output=$(peer chaincode query -C mychannel -n library -c '{"function":"SearchBookImpl:searchBookByTitle","Args":["Harry Potter"]}')
+	assertNotEquals "[]" "$output"
+
+	output=$(peer chaincode query -C mychannel -n library -c '{"function":"SearchBookImpl:searchBookByAuthor","Args":["Rowling"]}')
+	assertEquals "Author name must exactly match." "[]" "$output"
+
+	output=$(peer chaincode query -C mychannel -n library -c '{"function":"SearchBookImpl:searchBookByAuthor","Args":["J. K. Rowling"]}')
+	assertNotEquals "[]" "$output"
+
+	output=$(peer chaincode query -C mychannel -n library -c '{"function":"SearchBookImpl:searchBookByISBN","Args":["0545010225"]}')
+	assertNotEquals "[]" "$output"
+}
+
 source shunit2
