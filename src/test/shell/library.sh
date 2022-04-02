@@ -215,4 +215,27 @@ testManageSubject() {
 	fi
 }
 
+testManageBookCopy() {
+	if pci -C mychannel -n library --waitForEvent -c '{"function":"ManageBookCopyCRUDServiceImpl:addBookCopy","Args":["1","1001","F1"]}'; then
+		fail "If no conceptual book is added, we cannot add physical book." || return
+	fi
+	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
+
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageBookCRUDServiceImpl:createBook","Args":["1","Harry Potter","special","J. K. Rowling","Bloomsbury","fantasy novel","0-545-01022-5","2"]}' || fail || return
+	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
+
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageBookCopyCRUDServiceImpl:addBookCopy","Args":["1","1001","F1"]}' || fail || return
+	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
+
+	output=$(peer chaincode query -C mychannel -n library -c '{"function":"ManageBookCopyCRUDServiceImpl:queryBookCopy","Args":["1001"]}')
+	assertContains "$output" "AVAILABLE"
+	assertContains "$output" "F1"
+
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageBookCopyCRUDServiceImpl:deleteBookCopy","Args":["1001"]}'
+	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
+	if pci -C mychannel -n library --waitForEvent -c '{"function":"ManageBookCopyCRUDServiceImpl:deleteBookCopy","Args":["1001"]}'; then
+		fail || return
+	fi
+}
+
 source shunit2
