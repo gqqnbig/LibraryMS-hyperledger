@@ -28,7 +28,7 @@ public class Subject implements Serializable {
 	private Subject SuperSubject; 
 	@JsonProperty
 	private List<Object> SubSubjectPKs = new LinkedList<>();
-	private List<Subject> SubSubject = new LinkedList<Subject>(); 
+	private List<Subject> SubSubject;
 	
 	/* all get and set functions */
 	public String getName() {

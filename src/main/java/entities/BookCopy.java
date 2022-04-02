@@ -34,10 +34,10 @@ public class BookCopy implements Serializable {
 	private Book BookBelongs; 
 	@JsonProperty
 	private List<Object> LoanedRecordPKs = new LinkedList<>();
-	private List<Loan> LoanedRecord = new LinkedList<Loan>(); 
+	private List<Loan> LoanedRecord;
 	@JsonProperty
 	private List<Object> ReservationRecordPKs = new LinkedList<>();
-	private List<Reserve> ReservationRecord = new LinkedList<Reserve>(); 
+	private List<Reserve> ReservationRecord;
 	
 	/* all get and set functions */
 	public String getBarcode() {

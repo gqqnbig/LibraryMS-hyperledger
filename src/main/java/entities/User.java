@@ -43,13 +43,13 @@ public class User implements Serializable {
 	/* all references */
 	@JsonProperty
 	private List<Object> LoanedBookPKs = new LinkedList<>();
-	private List<Loan> LoanedBook = new LinkedList<Loan>(); 
+	private List<Loan> LoanedBook;
 	@JsonProperty
 	private List<Object> ReservedBookPKs = new LinkedList<>();
-	private List<Reserve> ReservedBook = new LinkedList<Reserve>(); 
+	private List<Reserve> ReservedBook;
 	@JsonProperty
 	private List<Object> RecommendedBookPKs = new LinkedList<>();
-	private List<RecommendBook> RecommendedBook = new LinkedList<RecommendBook>(); 
+	private List<RecommendBook> RecommendedBook;
 	
 	/* all get and set functions */
 	public String getUserID() {

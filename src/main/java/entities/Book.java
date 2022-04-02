@@ -38,12 +38,12 @@ public class Book implements Serializable {
 	
 	/* all references */
 	@JsonProperty
-	private List<Object> CopysPKs = new LinkedList<>();
-	private List<BookCopy> Copys = new LinkedList<BookCopy>(); 
+	private List<Object> CopysPKs = new ArrayList<>();
+	private List<BookCopy> Copys;
 	@JsonProperty
 	private List<Object> SubjectPKs = new LinkedList<>();
-	private List<Subject> Subject = new LinkedList<Subject>(); 
-	
+	private List<Subject> Subject;
+
 	/* all get and set functions */
 	public String getCallNo() {
 		return callNo;
