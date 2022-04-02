@@ -228,6 +228,9 @@ testManageBookCopy() {
 	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
 
 	output=$(peer chaincode query -C mychannel -n library -c '{"function":"ManageBookCopyCRUDServiceImpl:queryBookCopy","Args":["1001"]}')
+	if (($? > 0)); then
+		fail "queryBookCopy threw exception." || return
+	fi
 	assertContains "$output" "AVAILABLE"
 	assertContains "$output" "F1"
 
