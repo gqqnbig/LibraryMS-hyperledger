@@ -260,4 +260,13 @@ testManageLibrarian() {
 	fi
 }
 
+testSearchBookNoBooks() {
+	# Since we didn't add any conceptual book, all searches should return empty set.
+	peer chaincode query -C mychannel -n library -c '{"function":"SearchBookImpl:searchBookByBarCode","Args":["666"]}' || fail || return
+	peer chaincode query -C mychannel -n library -c '{"function":"SearchBookImpl:searchBookByTitle","Args":["666"]}' || fail || return
+	peer chaincode query -C mychannel -n library -c '{"function":"SearchBookImpl:searchBookByAuthor","Args":["666"]}' || fail || return
+	peer chaincode query -C mychannel -n library -c '{"function":"SearchBookImpl:searchBookByISBN","Args":["666"]}' || fail || return
+	peer chaincode query -C mychannel -n library -c '{"function":"SearchBookImpl:searchBookBySubject","Args":["666"]}' || fail || return
+}
+
 source shunit2
