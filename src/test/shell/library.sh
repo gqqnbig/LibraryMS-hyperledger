@@ -202,4 +202,17 @@ testManageBook() {
 	fi
 }
 
+testManageSubject() {
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageSubjectCRUDServiceImpl:createSubject","Args":["k"]}' || fail || return
+	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
+	peer chaincode query -C mychannel -n library -c '{"function":"ManageSubjectCRUDServiceImpl:querySubject","Args":["k"]}'
+	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageSubjectCRUDServiceImpl:deleteSubject","Args":["k"]}'
+	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
+
+	if pci -C mychannel -n library --waitForEvent -c '{"function":"ManageSubjectCRUDServiceImpl:deleteSubject","Args":["k"]}'; then
+		fail || return
+	fi
+}
+
 source shunit2
