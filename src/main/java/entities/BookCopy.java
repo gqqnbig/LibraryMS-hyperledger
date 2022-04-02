@@ -1,5 +1,6 @@
 package entities;
 
+import org.json.JSONPropertyIgnore;
 import services.impl.StandardOPs;
 import java.util.List;
 import java.util.LinkedList;
@@ -71,6 +72,7 @@ public class BookCopy implements Serializable {
 	
 	/* all functions for reference*/
 	@JsonIgnore
+	@JSONPropertyIgnore
 	public Book getBookBelongs() {
 		if (BookBelongs == null)
 			BookBelongs = EntityManager.getBookByPK(BookBelongsPK);
@@ -82,6 +84,7 @@ public class BookCopy implements Serializable {
 		this.BookBelongsPK = book.getPK();
 	}			
 	@JsonIgnore
+	@JSONPropertyIgnore
 	public List<Loan> getLoanedRecord() {
 		if (LoanedRecord == null)
 			LoanedRecord = LoanedRecordPKs.stream().map(EntityManager::getLoanByPK).collect(Collectors.toList());
@@ -100,6 +103,7 @@ public class BookCopy implements Serializable {
 		this.LoanedRecord.remove(loan);
 	}
 	@JsonIgnore
+	@JSONPropertyIgnore
 	public List<Reserve> getReservationRecord() {
 		if (ReservationRecord == null)
 			ReservationRecord = ReservationRecordPKs.stream().map(EntityManager::getReserveByPK).collect(Collectors.toList());

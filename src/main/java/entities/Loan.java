@@ -1,5 +1,6 @@
 package entities;
 
+import org.json.JSONPropertyIgnore;
 import services.impl.StandardOPs;
 import java.util.List;
 import java.util.LinkedList;
@@ -149,6 +150,7 @@ public class Loan implements Serializable {
 	
 	/* all functions for reference*/
 	@JsonIgnore
+	@JSONPropertyIgnore
 	public User getLoanedUser() {
 		if (LoanedUser == null)
 			LoanedUser = EntityManager.getUserByPK(LoanedUserPK);
@@ -160,6 +162,7 @@ public class Loan implements Serializable {
 		this.LoanedUserPK = user.getPK();
 	}			
 	@JsonIgnore
+	@JSONPropertyIgnore
 	public BookCopy getLoanedCopy() {
 		if (LoanedCopy == null)
 			LoanedCopy = EntityManager.getBookCopyByPK(LoanedCopyPK);
@@ -171,6 +174,7 @@ public class Loan implements Serializable {
 		this.LoanedCopyPK = bookcopy.getPK();
 	}			
 	@JsonIgnore
+	@JSONPropertyIgnore
 	public Librarian getLoanLibrarian() {
 		if (LoanLibrarian == null)
 			LoanLibrarian = EntityManager.getLibrarianByPK(LoanLibrarianPK);
@@ -182,6 +186,7 @@ public class Loan implements Serializable {
 		this.LoanLibrarianPK = librarian.getPK();
 	}			
 	@JsonIgnore
+	@JSONPropertyIgnore
 	public Librarian getReturnLibrarian() {
 		if (ReturnLibrarian == null)
 			ReturnLibrarian = EntityManager.getLibrarianByPK(ReturnLibrarianPK);

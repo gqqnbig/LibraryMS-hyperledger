@@ -1,5 +1,6 @@
 package entities;
 
+import org.json.JSONPropertyIgnore;
 import services.impl.StandardOPs;
 import java.util.List;
 import java.util.LinkedList;
@@ -40,6 +41,7 @@ public class RecommendBook extends Book  implements Serializable {
 	
 	/* all functions for reference*/
 	@JsonIgnore
+	@JSONPropertyIgnore
 	public User getRecommendUser() {
 		if (RecommendUser == null)
 			RecommendUser = EntityManager.getUserByPK(RecommendUserPK);

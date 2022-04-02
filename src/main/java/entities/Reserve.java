@@ -1,5 +1,6 @@
 package entities;
 
+import org.json.JSONPropertyIgnore;
 import services.impl.StandardOPs;
 import java.util.List;
 import java.util.LinkedList;
@@ -56,6 +57,7 @@ public class Reserve implements Serializable {
 	
 	/* all functions for reference*/
 	@JsonIgnore
+	@JSONPropertyIgnore
 	public BookCopy getReservedCopy() {
 		if (ReservedCopy == null)
 			ReservedCopy = EntityManager.getBookCopyByPK(ReservedCopyPK);
@@ -67,6 +69,7 @@ public class Reserve implements Serializable {
 		this.ReservedCopyPK = bookcopy.getPK();
 	}			
 	@JsonIgnore
+	@JSONPropertyIgnore
 	public User getReservedUser() {
 		if (ReservedUser == null)
 			ReservedUser = EntityManager.getUserByPK(ReservedUserPK);

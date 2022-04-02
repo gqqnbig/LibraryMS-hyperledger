@@ -1,5 +1,6 @@
 package entities;
 
+import org.json.JSONPropertyIgnore;
 import services.impl.StandardOPs;
 import java.util.List;
 import java.util.LinkedList;
@@ -104,6 +105,7 @@ public class Book implements Serializable {
 	
 	/* all functions for reference*/
 	@JsonIgnore
+	@JSONPropertyIgnore
 	public List<BookCopy> getCopys() {
 		if (Copys == null)
 			Copys = CopysPKs.stream().map(EntityManager::getBookCopyByPK).collect(Collectors.toList());
@@ -122,6 +124,7 @@ public class Book implements Serializable {
 		this.Copys.remove(bookcopy);
 	}
 	@JsonIgnore
+	@JSONPropertyIgnore
 	public List<Subject> getSubject() {
 		if (Subject == null)
 			Subject = SubjectPKs.stream().map(EntityManager::getSubjectByPK).collect(Collectors.toList());

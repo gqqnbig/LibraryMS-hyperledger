@@ -1,5 +1,6 @@
 package entities;
 
+import org.json.JSONPropertyIgnore;
 import services.impl.StandardOPs;
 import java.util.List;
 import java.util.LinkedList;
@@ -41,6 +42,7 @@ public class Subject implements Serializable {
 	
 	/* all functions for reference*/
 	@JsonIgnore
+	@JSONPropertyIgnore
 	public Subject getSuperSubject() {
 		if (SuperSubject == null)
 			SuperSubject = EntityManager.getSubjectByPK(SuperSubjectPK);
@@ -52,6 +54,7 @@ public class Subject implements Serializable {
 		this.SuperSubjectPK = subject.getPK();
 	}			
 	@JsonIgnore
+	@JSONPropertyIgnore
 	public List<Subject> getSubSubject() {
 		if (SubSubject == null)
 			SubSubject = SubSubjectPKs.stream().map(EntityManager::getSubjectByPK).collect(Collectors.toList());
