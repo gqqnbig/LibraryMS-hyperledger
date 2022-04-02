@@ -238,4 +238,24 @@ testManageBookCopy() {
 	fi
 }
 
+testManageLibrarian() {
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageLibrarianCRUDServiceImpl:createLibrarian","Args":["666","Antony Blinken","833"]}' || fail || return
+
+	output=$(peer chaincode query -C mychannel -n library -c '{"function":"ManageLibrarianCRUDServiceImpl:queryLibrarian","Args":["666"]}')
+	assertContains "$output" "Antony Blinken"
+	assertContains "$output" "833"
+
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageLibrarianCRUDServiceImpl:modifyLibrarian","Args":["666","Janet Yellen","646"]}' || fail || return
+
+	output=$(peer chaincode query -C mychannel -n library -c '{"function":"ManageLibrarianCRUDServiceImpl:queryLibrarian","Args":["666"]}')
+	assertContains "$output" "Janet Yellen"
+	assertContains "$output" "646"
+
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageLibrarianCRUDServiceImpl:deleteLibrarian","Args":["666"]}'
+
+	if pci -C mychannel -n library --waitForEvent -c '{"function":"ManageLibrarianCRUDServiceImpl:modifyLibrarian","Args":["666","Janet Yellen","646"]}'; then
+		fail || return
+	fi
+}
+
 source shunit2
