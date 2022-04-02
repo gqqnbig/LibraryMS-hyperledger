@@ -19,8 +19,8 @@ oneTimeSetUp() {
 }
 
 setUp() {
-	./network.sh down
-	./network.sh up createChannel
+	./network.sh down >/dev/null
+	./network.sh up createChannel >/dev/null
 
 	# start a subshell due to export variables.
 	(
