@@ -168,6 +168,11 @@ testManageFaculty() {
 
 testManageBook() {
 	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageBookCRUDServiceImpl:createBook","Args":["1","Harry Potter","special","J. K. Rowling","Bloomsbury","fantasy novel","0-545-01022-5","2"]}' || fail || return
+	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
+
+	if pci -C mychannel -n library --waitForEvent -c '{"function":"ManageBookCRUDServiceImpl:createBook","Args":["1","Harry Potter","special","J. K. Rowling","Bloomsbury","fantasy novel","0-545-01022-5","2"]}'; then
+		fail || return
+	fi
 
 	output=$(peer chaincode query -C mychannel -n library -c '{"function":"ManageBookCRUDServiceImpl:queryBook","Args":["1"]}')
 	assertContains "$output" "Harry Potter"
@@ -178,6 +183,7 @@ testManageBook() {
 	assertContains "$output" "0-545-01022-5"
 
 	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageBookCRUDServiceImpl:modifyBook","Args":["1","The Lord of the Rings","paperback","J. R. R. Tolkien","Allen & Unwin","epic novel","9780007117116","10"]}'
+	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
 
 	output=$(peer chaincode query -C mychannel -n library -c '{"function":"ManageBookCRUDServiceImpl:queryBook","Args":["1"]}')
 	assertContains "$output" "The Lord of the Rings"
@@ -189,6 +195,11 @@ testManageBook() {
 	assertContains "$output" "10"
 
 	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageBookCRUDServiceImpl:deleteBook","Args":["1"]}' || fail || return
+	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
+
+	if pci -C mychannel -n library --waitForEvent -c '{"function":"ManageBookCRUDServiceImpl:deleteBook","Args":["1"]}'; then
+		fail || return
+	fi
 }
 
 source shunit2
