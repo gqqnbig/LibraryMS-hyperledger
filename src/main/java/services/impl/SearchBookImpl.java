@@ -215,7 +215,7 @@ public class SearchBookImpl implements SearchBook, Serializable, ContractInterfa
 			//no nested iterator --  iterator: select
 			for (Book book : ((List<Book>)EntityManager.getAllInstancesOf(Book.class)))
 			{
-				if (book.getISBn().equals(iSBNnumber))
+				if (book.getIsbn().equals(iSBNnumber))
 				{
 					tempsbook.add(book);
 				} 

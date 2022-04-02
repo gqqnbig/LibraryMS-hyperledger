@@ -3550,8 +3550,8 @@ public class PrototypeController implements Initializable {
 				unit.put("Description", String.valueOf(r.getDescription()));
 			else
 				unit.put("Description", "");
-			if (r.getISBn() != null)
-				unit.put("ISBn", String.valueOf(r.getISBn()));
+			if (r.getIsbn() != null)
+				unit.put("ISBn", String.valueOf(r.getIsbn()));
 			else
 				unit.put("ISBn", "");
 			unit.put("CopyNum", String.valueOf(r.getCopyNum()));
@@ -4023,8 +4023,8 @@ public class PrototypeController implements Initializable {
 				unit.put("Description", String.valueOf(r.getDescription()));
 			else
 				unit.put("Description", "");
-			if (r.getISBn() != null)
-				unit.put("ISBn", String.valueOf(r.getISBn()));
+			if (r.getIsbn() != null)
+				unit.put("ISBn", String.valueOf(r.getIsbn()));
 			else
 				unit.put("ISBn", "");
 			unit.put("CopyNum", String.valueOf(r.getCopyNum()));
@@ -4347,8 +4347,8 @@ public class PrototypeController implements Initializable {
 					unit.put("Description", String.valueOf(r.getDescription()));
 				else
 					unit.put("Description", "");
-				if (r.getISBn() != null)
-					unit.put("ISBn", String.valueOf(r.getISBn()));
+				if (r.getIsbn() != null)
+					unit.put("ISBn", String.valueOf(r.getIsbn()));
 				else
 					unit.put("ISBn", "");
 				unit.put("CopyNum", String.valueOf(r.getCopyNum()));
@@ -4472,8 +4472,8 @@ public class PrototypeController implements Initializable {
 					unit.put("Description", String.valueOf(r.getDescription()));
 				else
 					unit.put("Description", "");
-				if (r.getISBn() != null)
-					unit.put("ISBn", String.valueOf(r.getISBn()));
+				if (r.getIsbn() != null)
+					unit.put("ISBn", String.valueOf(r.getIsbn()));
 				else
 					unit.put("ISBn", "");
 				unit.put("CopyNum", String.valueOf(r.getCopyNum()));
@@ -4687,8 +4687,8 @@ public class PrototypeController implements Initializable {
 					unit.put("Description", String.valueOf(r.getDescription()));
 				else
 					unit.put("Description", "");
-				if (r.getISBn() != null)
-					unit.put("ISBn", String.valueOf(r.getISBn()));
+				if (r.getIsbn() != null)
+					unit.put("ISBn", String.valueOf(r.getIsbn()));
 				else
 					unit.put("ISBn", "");
 				unit.put("CopyNum", String.valueOf(r.getCopyNum()));
@@ -4817,8 +4817,8 @@ public class PrototypeController implements Initializable {
 					unit.put("Description", String.valueOf(r.getDescription()));
 				else
 					unit.put("Description", "");
-				if (r.getISBn() != null)
-					unit.put("ISBn", String.valueOf(r.getISBn()));
+				if (r.getIsbn() != null)
+					unit.put("ISBn", String.valueOf(r.getIsbn()));
 				else
 					unit.put("ISBn", "");
 				unit.put("CopyNum", String.valueOf(r.getCopyNum()));
@@ -7690,8 +7690,8 @@ modifyBookCopy_status_cb.getItems().add("LOANED");
 							unit.put("Description", String.valueOf(r.getDescription()));
 						else
 							unit.put("Description", "");
-						if (r.getISBn() != null)
-							unit.put("ISBn", String.valueOf(r.getISBn()));
+						if (r.getIsbn() != null)
+							unit.put("ISBn", String.valueOf(r.getIsbn()));
 						else
 							unit.put("ISBn", "");
 						unit.put("CopyNum", String.valueOf(r.getCopyNum()));
@@ -7849,8 +7849,8 @@ modifyBookCopy_status_cb.getItems().add("LOANED");
 							unit.put("Description", String.valueOf(r.getDescription()));
 						else
 							unit.put("Description", "");
-						if (r.getISBn() != null)
-							unit.put("ISBn", String.valueOf(r.getISBn()));
+						if (r.getIsbn() != null)
+							unit.put("ISBn", String.valueOf(r.getIsbn()));
 						else
 							unit.put("ISBn", "");
 						unit.put("CopyNum", String.valueOf(r.getCopyNum()));
@@ -8008,8 +8008,8 @@ modifyBookCopy_status_cb.getItems().add("LOANED");
 							unit.put("Description", String.valueOf(r.getDescription()));
 						else
 							unit.put("Description", "");
-						if (r.getISBn() != null)
-							unit.put("ISBn", String.valueOf(r.getISBn()));
+						if (r.getIsbn() != null)
+							unit.put("ISBn", String.valueOf(r.getIsbn()));
 						else
 							unit.put("ISBn", "");
 						unit.put("CopyNum", String.valueOf(r.getCopyNum()));
@@ -8167,8 +8167,8 @@ modifyBookCopy_status_cb.getItems().add("LOANED");
 							unit.put("Description", String.valueOf(r.getDescription()));
 						else
 							unit.put("Description", "");
-						if (r.getISBn() != null)
-							unit.put("ISBn", String.valueOf(r.getISBn()));
+						if (r.getIsbn() != null)
+							unit.put("ISBn", String.valueOf(r.getIsbn()));
 						else
 							unit.put("ISBn", "");
 						unit.put("CopyNum", String.valueOf(r.getCopyNum()));
@@ -8326,8 +8326,8 @@ modifyBookCopy_status_cb.getItems().add("LOANED");
 							unit.put("Description", String.valueOf(r.getDescription()));
 						else
 							unit.put("Description", "");
-						if (r.getISBn() != null)
-							unit.put("ISBn", String.valueOf(r.getISBn()));
+						if (r.getIsbn() != null)
+							unit.put("ISBn", String.valueOf(r.getIsbn()));
 						else
 							unit.put("ISBn", "");
 						unit.put("CopyNum", String.valueOf(r.getCopyNum()));
@@ -10256,8 +10256,8 @@ modifyBookCopy_status_cb.getItems().add("LOANED");
 						unit.put("Description", String.valueOf(r.getDescription()));
 					else
 						unit.put("Description", "");
-					if (r.getISBn() != null)
-						unit.put("ISBn", String.valueOf(r.getISBn()));
+					if (r.getIsbn() != null)
+						unit.put("ISBn", String.valueOf(r.getIsbn()));
 					else
 						unit.put("ISBn", "");
 					unit.put("CopyNum", String.valueOf(r.getCopyNum()));

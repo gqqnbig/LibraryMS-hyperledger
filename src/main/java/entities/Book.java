@@ -32,7 +32,7 @@ public class Book implements Serializable {
 	@Property()
 	private String description;
 	@Property()
-	private String iSBn;
+	private String isbn;
 	@Property()
 	private int copyNum;
 	
@@ -87,12 +87,12 @@ public class Book implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public String getISBn() {
-		return iSBn;
+	public String getIsbn() {
+		return isbn;
 	}	
 	
-	public void setISBn(String isbn) {
-		this.iSBn = isbn;
+	public void setIsbn(String isbn) {
+		this.isbn = isbn;
 	}
 	public int getCopyNum() {
 		return copyNum;

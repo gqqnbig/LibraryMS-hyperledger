@@ -88,7 +88,7 @@ public class ManageBookCRUDServiceImpl implements ManageBookCRUDService, Seriali
 			boo.setAuthor(author);
 			boo.setPublisher(publisher);
 			boo.setDescription(description);
-			boo.setISBn(isbn);
+			boo.setIsbn(isbn);
 			boo.setCopyNum(copynum);
 			EntityManager.addObject("Book", boo);
 			
@@ -108,7 +108,7 @@ public class ManageBookCRUDServiceImpl implements ManageBookCRUDService, Seriali
 			 && 
 			boo.getDescription() == description
 			 && 
-			boo.getISBn() == isbn
+			boo.getIsbn() == isbn
 			 && 
 			boo.getCopyNum() == copynum
 			 && 
@@ -226,7 +226,7 @@ public class ManageBookCRUDServiceImpl implements ManageBookCRUDService, Seriali
 			book.setAuthor(author);
 			book.setPublisher(publisher);
 			book.setDescription(description);
-			book.setISBn(isbn);
+			book.setIsbn(isbn);
 			book.setCopyNum(copynum);
 			
 			
@@ -244,7 +244,7 @@ public class ManageBookCRUDServiceImpl implements ManageBookCRUDService, Seriali
 			 && 
 			book.getDescription() == description
 			 && 
-			book.getISBn() == isbn
+			book.getIsbn() == isbn
 			 && 
 			book.getCopyNum() == copynum
 			 && 

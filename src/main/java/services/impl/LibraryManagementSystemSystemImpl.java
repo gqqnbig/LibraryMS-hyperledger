@@ -91,7 +91,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 			r.setAuthor(author);
 			r.setPublisher(publisher);
 			r.setDescription(description);
-			r.setISBn(isbn);
+			r.setIsbn(isbn);
 			r.setRecommendDate(LocalDate.now());
 			r.setRecommendUser(user);
 			user.addRecommendedBook(r);
@@ -113,7 +113,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 			 && 
 			r.getDescription() == description
 			 && 
-			r.getISBn() == isbn
+			r.getIsbn() == isbn
 			 && 
 			r.getRecommendDate().equals(LocalDate.now())
 			 && 
