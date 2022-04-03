@@ -642,7 +642,9 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		User Pre_user = SerializationUtils.clone(user);
 
 		/* check precondition */
-		if (StandardOPs.oclIsundefined(user) == false && StandardOPs.oclIsundefined(copy) == false && user.getBorrowStatus() == BorrowStatus.NORMAL && user.getSuspensionDays() == 0 && (user instanceof Student ? (stu.getProgramme() == Programme.BACHELOR ? stu.getLoanedNumber() < 20 : (stu.getProgramme() == Programme.MASTER ? stu.getLoanedNumber() < 40 : stu.getLoanedNumber() < 60)) : fac.getLoanedNumber() < 60) && (copy.getStatus() == CopyStatus.AVAILABLE || (copy.getStatus() == CopyStatus.ONHOLDSHELF && copy.getIsReserved() == true && StandardOPs.oclIsundefined(res) == false && res.getIsReserveClosed() == false))) 
+		if (StandardOPs.oclIsundefined(user) == false && StandardOPs.oclIsundefined(copy) == false && user.getBorrowStatus() == BorrowStatus.NORMAL && user.getSuspensionDays() == 0 &&
+				(user instanceof Student ? (stu.getProgramme() == Programme.BACHELOR ? stu.getLoanedNumber() < 20 : (stu.getProgramme() == Programme.MASTER ? stu.getLoanedNumber() < 40 : stu.getLoanedNumber() < 60)) : fac.getLoanedNumber() < 60) &&
+				(copy.getStatus() == CopyStatus.AVAILABLE || (copy.getStatus() == CopyStatus.ONHOLDSHELF && copy.getIsReserved() == true && StandardOPs.oclIsundefined(res) == false && res.getIsReserveClosed() == false)))
 		{ 
 			/* Logic here */
 			Loan loan = null;
