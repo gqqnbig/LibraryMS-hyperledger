@@ -308,7 +308,7 @@ testSearchBookByBarCode() {
 	assertNotEquals "[]" "$output"
 }
 
-testReservation() {
+testUserReservation() {
 	# create student
 	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:createUser","Args":["8","Joe Biden","M","1942","jbiden@whitehouse.gov","Executive","0","NORMAL", "0", "0"]}' || fail || return
 
@@ -329,6 +329,31 @@ testReservation() {
 	pci -C mychannel -n library --waitForEvent -c '{"function":"LibraryManagementSystemSystemImpl:cancelReservation","Args":["8","1001"]}' || fail || return
 	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
 	if pci -C mychannel -n library --waitForEvent -c '{"function":"LibraryManagementSystemSystemImpl:cancelReservation","Args":["8","1001"]}'; then
+		fail || return
+	fi
+}
+
+
+testFacultyReservation() {
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:createFaculty","Args":["100","Eggert","M","998","eggert@ucla.edu","engineering","CHAIRPROFESSOR","INPOSITION"]}' || fail || return
+
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageBookCRUDServiceImpl:createBook","Args":["1","Harry Potter","special","J. K. Rowling","Bloomsbury","fantasy novel","0-545-01022-5","2"]}' || fail || return
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageBookCopyCRUDServiceImpl:addBookCopy","Args":["1","1001","F1"]}'
+
+	# makeReservation requires the book copy to be loaned. It may be a bug. But we will live with that.
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageBookCopyCRUDServiceImpl:modifyBookCopy","Args":["1001","LOANED","F1","false"]}'
+
+	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
+	pci -C mychannel -n library --waitForEvent -c '{"function":"LibraryManagementSystemSystemImpl:makeReservation","Args":["100","1001"]}' || fail || return
+	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
+	if pci -C mychannel -n library --waitForEvent -c '{"function":"LibraryManagementSystemSystemImpl:makeReservation","Args":["100","1001"]}'; then
+		fail || return
+	fi
+
+	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
+	pci -C mychannel -n library --waitForEvent -c '{"function":"LibraryManagementSystemSystemImpl:cancelReservation","Args":["100","1001"]}' || fail || return
+	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
+	if pci -C mychannel -n library --waitForEvent -c '{"function":"LibraryManagementSystemSystemImpl:cancelReservation","Args":["100","1001"]}'; then
 		fail || return
 	fi
 }
