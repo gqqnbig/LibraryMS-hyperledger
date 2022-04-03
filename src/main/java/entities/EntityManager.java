@@ -784,17 +784,16 @@ public class EntityManager {
 	 * and of its super classes. To be on the safe side, this method saves all related lists.
 	 */
 	public static <T> boolean saveModified(Class<T> clazz) {
+		if (clazz.equals(User.class)) {
+			saveModified(Student.class);
+			saveModified(Faculty.class);
+		}
+
 		List<T> list = loadList(clazz);
 		String json = genson.serialize(list);
 		stub.putStringState(clazz.getSimpleName(), json);
 
-		var superClass = clazz.getSuperclass();
-		if (superClass != null)
-			System.out.println("saveModified: superclass is " + superClass.getName());
-		if (superClass == null || superClass.getName().contains("entities.") == false)
-			return true;
-		else
-			return saveModified(superClass);
+		return true;
 	}
 }
 
