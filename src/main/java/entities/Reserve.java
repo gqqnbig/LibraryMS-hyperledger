@@ -47,10 +47,19 @@ public class Reserve implements Serializable {
 	public void setReserveDate(LocalDate reservedate) {
 		this.reserveDate = reservedate;
 	}
+
+	/**
+	 * true means you can reserve.
+	 * false means it's reserved.
+	 */
 	public boolean getIsReserveClosed() {
 		return isReserveClosed;
-	}	
-	
+	}
+
+	/**
+	 * true means you can reserve.
+	 * false means it's reserved.
+	 */
 	public void setIsReserveClosed(boolean isreserveclosed) {
 		this.isReserveClosed = isreserveclosed;
 	}
