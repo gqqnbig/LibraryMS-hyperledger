@@ -166,6 +166,17 @@ testManageFaculty() {
 	fi
 }
 
+testUserSameId() {
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:createUser","Args":["1","1","M","1","1","1","1","NORMAL", "1", "1"]}' || fail || return
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:createStudent","Args":["1","2","F","2","2","2","2","BACHELOR", "PROGRAMMING"]}' || fail || return
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:createFaculty","Args":["1","3","M","3","3","3","CHAIRPROFESSOR","INPOSITION"]}' || fail || return
+
+	# Per the original application, it's ok to for different type of users to have the same id,
+	# and the User type should take precedence in queryUser().
+	output=$(peer chaincode query -C mychannel -n library -c '{"function":"ManageUserCRUDServiceImpl:queryUser","Args":["1"]}')
+	assertContains "$output" "1"
+}
+
 testManageBook() {
 	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageBookCRUDServiceImpl:createBook","Args":["1","Harry Potter","special","J. K. Rowling","Bloomsbury","fantasy novel","0-545-01022-5","2"]}' || fail || return
 	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
