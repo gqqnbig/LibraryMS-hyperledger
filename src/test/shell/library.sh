@@ -318,12 +318,19 @@ testReservation() {
 	# makeReservation requires the book copy to be loaned. It may be a bug. But we will live with that.
 	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageBookCopyCRUDServiceImpl:modifyBookCopy","Args":["1001","LOANED","F1","false"]}'
 
-
+	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
 	pci -C mychannel -n library --waitForEvent -c '{"function":"LibraryManagementSystemSystemImpl:makeReservation","Args":["8","1001"]}' || fail || return
+	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
+	if pci -C mychannel -n library --waitForEvent -c '{"function":"LibraryManagementSystemSystemImpl:makeReservation","Args":["8","1001"]}'; then
+		fail || return
+	fi
 
-
+	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
 	pci -C mychannel -n library --waitForEvent -c '{"function":"LibraryManagementSystemSystemImpl:cancelReservation","Args":["8","1001"]}' || fail || return
-
+	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
+	if pci -C mychannel -n library --waitForEvent -c '{"function":"LibraryManagementSystemSystemImpl:cancelReservation","Args":["8","1001"]}'; then
+		fail || return
+	fi
 }
 
 source shunit2
