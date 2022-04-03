@@ -383,7 +383,20 @@ testStudentReservation() {
 testUserRecommendBook() {
 	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:createUser","Args":["8","Joe Biden","M","1942","jbiden@whitehouse.gov","Executive","0","NORMAL", "0", "0"]}' || fail || return
 
+	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
+	if pci -C mychannel -n library --waitForEvent -c '{"function":"LibraryManagementSystemSystemImpl:recommendBook","Args":["10","1","Harry Potter","special","J. K. Rowling","Bloomsbury","fantasy novel","0-545-01022-5"]}'; then
+		fail || return
+	fi
+
 	pci -C mychannel -n library --waitForEvent -c '{"function":"LibraryManagementSystemSystemImpl:recommendBook","Args":["8","1","Harry Potter","special","J. K. Rowling","Bloomsbury","fantasy novel","0-545-01022-5"]}' || fail || return
+
+	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
+	if peer chaincode query -C mychannel -n library -c '{"function":"ListBookHistoryImpl:listRecommendBook","Args":["10"]}'; then
+		fail || return
+	fi
+
+	output=$(peer chaincode query -C mychannel -n library -c '{"function":"ListBookHistoryImpl:listRecommendBook","Args":["8"]}')
+	assertNotEquals "[]" "$output"
 }
 
 source shunit2
