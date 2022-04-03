@@ -380,4 +380,10 @@ testStudentReservation() {
 	fi
 }
 
+testUserRecommendBook() {
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:createUser","Args":["8","Joe Biden","M","1942","jbiden@whitehouse.gov","Executive","0","NORMAL", "0", "0"]}' || fail || return
+
+	pci -C mychannel -n library --waitForEvent -c '{"function":"LibraryManagementSystemSystemImpl:recommendBook","Args":["8","1","Harry Potter","special","J. K. Rowling","Bloomsbury","fantasy novel","0-545-01022-5"]}' || fail || return
+}
+
 source shunit2
