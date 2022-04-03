@@ -234,6 +234,14 @@ testManageBookCopy() {
 	assertContains "$output" "AVAILABLE"
 	assertContains "$output" "F1"
 
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageBookCopyCRUDServiceImpl:modifyBookCopy","Args":["1001","LOANED","F1","true"]}'
+	output=$(peer chaincode query -C mychannel -n library -c '{"function":"ManageBookCopyCRUDServiceImpl:queryBookCopy","Args":["1001"]}')
+	if (($? > 0)); then
+		fail "queryBookCopy threw exception." || return
+	fi
+	assertContains "$output" "LOANED"
+	assertContains "$output" "true"
+
 	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageBookCopyCRUDServiceImpl:deleteBookCopy","Args":["1001"]}'
 	docker stop "$(docker ps -n 1 --filter 'name=dev' --format '{{.ID}}')"
 	if pci -C mychannel -n library --waitForEvent -c '{"function":"ManageBookCopyCRUDServiceImpl:deleteBookCopy","Args":["1001"]}'; then
