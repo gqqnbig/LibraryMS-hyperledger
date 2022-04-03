@@ -429,4 +429,38 @@ testFacultyRecommendBook() {
 	assertNotEquals "[]" "$output"
 }
 
+testBorrowBook() {
+	# Regular user cannot borrow book. It must be either student or faculty.
+
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:createStudent","Args":["1","1","F","1","1","1","1","BACHELOR", "PROGRAMMING"]}' || fail || return
+
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageBookCRUDServiceImpl:createBook","Args":["1","Harry Potter","special","J. K. Rowling","Bloomsbury","fantasy novel","0-545-01022-5","2"]}' || fail || return
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageBookCopyCRUDServiceImpl:addBookCopy","Args":["1","1001","F1"]}' || fail || return
+
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:modifyUser","Args":["1","1","F","1","1","1","1","NORMAL", "1", "0"]}' || fail || return
+	if pci -C mychannel -n library --waitForEvent -c '{"function":"LibraryManagementSystemSystemImpl:borrowBook","Args":["1","1001"]}'; then
+		fail "Student cannot borrow book if he has suspension days." || return
+	fi
+	pci -C mychannel -n library --waitForEvent -c '{"function":"ManageUserCRUDServiceImpl:modifyUser","Args":["1","1","F","1","1","1","1","NORMAL", "0", "0"]}' || fail || return
+	pci -C mychannel -n library --waitForEvent -c '{"function":"LibraryManagementSystemSystemImpl:borrowBook","Args":["1","1001"]}'
+
+	if pci -C mychannel -n library --waitForEvent -c '{"function":"LibraryManagementSystemSystemImpl:borrowBook","Args":["1","1001"]}'; then
+		fail || return
+	fi
+
+	if pci -C mychannel -n library --waitForEvent -c '{"function":"LibraryManagementSystemSystemImpl:renewBook","Args":["1","1001"]}'; then
+		fail "renewBook() should constantly fails because RM2PT didn't correctly translate its post conditions." || return
+	fi
+
+	if pci -C mychannel -n library --waitForEvent -c '{"function":"LibraryManagementSystemSystemImpl:returnBook","Args":["wagyu"]}'; then
+		fail "returnBook() is expected to fail because it doesn't check null reference." || return
+	fi
+
+	pci -C mychannel -n library --waitForEvent -c '{"function":"LibraryManagementSystemSystemImpl:returnBook","Args":["1001"]}'
+
+	if pci -C mychannel -n library --waitForEvent -c '{"function":"LibraryManagementSystemSystemImpl:returnBook","Args":["1001"]}'; then
+		fail || return
+	fi
+}
+
 source shunit2
