@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import org.hyperledger.fabric.contract.annotation.*;
+import converters.*;
+import com.owlike.genson.annotation.*;
 
 @DataType()
 public class Reserve implements Serializable {
@@ -24,10 +26,12 @@ public class Reserve implements Serializable {
 	private User ReservedUser; 
 	
 	/* all get and set functions */
+	@JsonConverter(LocalDateConverter.class)
 	public LocalDate getReserveDate() {
 		return reserveDate;
 	}	
 	
+	@JsonConverter(LocalDateConverter.class)
 	public void setReserveDate(LocalDate reservedate) {
 		this.reserveDate = reservedate;
 	}

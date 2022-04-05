@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import org.hyperledger.fabric.contract.annotation.*;
+import converters.*;
+import com.owlike.genson.annotation.*;
 
 @DataType()
 public class RecommendBook extends Book  implements Serializable {
@@ -21,10 +23,12 @@ public class RecommendBook extends Book  implements Serializable {
 	private User RecommendUser; 
 	
 	/* all get and set functions */
+	@JsonConverter(LocalDateConverter.class)
 	public LocalDate getRecommendDate() {
 		return recommendDate;
 	}	
 	
+	@JsonConverter(LocalDateConverter.class)
 	public void setRecommendDate(LocalDate recommenddate) {
 		this.recommendDate = recommenddate;
 	}

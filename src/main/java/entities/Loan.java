@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import org.hyperledger.fabric.contract.annotation.*;
+import converters.*;
+import com.owlike.genson.annotation.*;
 
 @DataType()
 public class Loan implements Serializable {
@@ -44,31 +46,39 @@ public class Loan implements Serializable {
 	private Librarian ReturnLibrarian; 
 	
 	/* all get and set functions */
+	@JsonConverter(LocalDateConverter.class)
 	public LocalDate getLoanDate() {
 		return loanDate;
 	}	
 	
+	@JsonConverter(LocalDateConverter.class)
 	public void setLoanDate(LocalDate loandate) {
 		this.loanDate = loandate;
 	}
+	@JsonConverter(LocalDateConverter.class)
 	public LocalDate getRenewDate() {
 		return renewDate;
 	}	
 	
+	@JsonConverter(LocalDateConverter.class)
 	public void setRenewDate(LocalDate renewdate) {
 		this.renewDate = renewdate;
 	}
+	@JsonConverter(LocalDateConverter.class)
 	public LocalDate getDueDate() {
 		return dueDate;
 	}	
 	
+	@JsonConverter(LocalDateConverter.class)
 	public void setDueDate(LocalDate duedate) {
 		this.dueDate = duedate;
 	}
+	@JsonConverter(LocalDateConverter.class)
 	public LocalDate getReturnDate() {
 		return returnDate;
 	}	
 	
+	@JsonConverter(LocalDateConverter.class)
 	public void setReturnDate(LocalDate returndate) {
 		this.returnDate = returndate;
 	}
