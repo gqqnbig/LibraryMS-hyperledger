@@ -12,6 +12,9 @@ import org.hyperledger.fabric.contract.annotation.*;
 
 @DataType()
 public class Subject implements Serializable {
+	public Object getPK() {
+		return getName();
+	}
 	
 	/* all primary attributes */
 	@Property()

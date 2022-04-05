@@ -14,6 +14,9 @@ import com.owlike.genson.annotation.*;
 
 @DataType()
 public class RecommendBook extends Book  implements Serializable {
+	public Object getPK() {
+		return getCallNo();
+	}
 	
 	/* all primary attributes */
 	@Property()

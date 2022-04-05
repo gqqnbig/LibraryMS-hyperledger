@@ -12,6 +12,9 @@ import org.hyperledger.fabric.contract.annotation.*;
 
 @DataType()
 public class Book implements Serializable {
+	public Object getPK() {
+		return getCallNo();
+	}
 	
 	/* all primary attributes */
 	@Property()
