@@ -15,7 +15,14 @@ import java.io.ObjectOutputStream;
 import java.io.FileInputStream;
 import java.io.File;
 
+import org.hyperledger.fabric.shim.ChaincodeStub;
+import com.owlike.genson.Genson;
+
 public class EntityManager {
+
+	private static final Genson genson = new Genson();
+
+	public static ChaincodeStub stub;
 
 	private static Map<String, List> AllInstance = new HashMap<String, List>();
 	
@@ -213,7 +220,13 @@ public class EntityManager {
 	}
 	
 	public static boolean addUserObject(User o) {
-		return UserInstances.add(o);
+		List<User> list = loadList(User.class);
+		if (list.add(o)) {
+			String json = genson.serialize(list);
+			stub.putStringState("User", json);
+			return true;
+		} else
+			return false;
 	}
 	
 	public static boolean addUserObjects(List<User> os) {
@@ -221,7 +234,13 @@ public class EntityManager {
 	}
 	
 	public static boolean deleteUserObject(User o) {
-		return UserInstances.remove(o);
+		List<User> list = loadList(User.class);
+		if (list.remove(o)) {
+			String json = genson.serialize(list);
+			stub.putStringState("User", json);
+			return true;
+		} else
+			return false;
 	}
 	
 	public static boolean deleteUserObjects(List<User> os) {
@@ -233,7 +252,13 @@ public class EntityManager {
 	}
 	
 	public static boolean addStudentObject(Student o) {
-		return StudentInstances.add(o);
+		List<Student> list = loadList(Student.class);
+		if (list.add(o)) {
+			String json = genson.serialize(list);
+			stub.putStringState("Student", json);
+			return true;
+		} else
+			return false;
 	}
 	
 	public static boolean addStudentObjects(List<Student> os) {
@@ -241,7 +266,13 @@ public class EntityManager {
 	}
 	
 	public static boolean deleteStudentObject(Student o) {
-		return StudentInstances.remove(o);
+		List<Student> list = loadList(Student.class);
+		if (list.remove(o)) {
+			String json = genson.serialize(list);
+			stub.putStringState("Student", json);
+			return true;
+		} else
+			return false;
 	}
 	
 	public static boolean deleteStudentObjects(List<Student> os) {
@@ -253,7 +284,13 @@ public class EntityManager {
 	}
 	
 	public static boolean addFacultyObject(Faculty o) {
-		return FacultyInstances.add(o);
+		List<Faculty> list = loadList(Faculty.class);
+		if (list.add(o)) {
+			String json = genson.serialize(list);
+			stub.putStringState("Faculty", json);
+			return true;
+		} else
+			return false;
 	}
 	
 	public static boolean addFacultyObjects(List<Faculty> os) {
@@ -261,7 +298,13 @@ public class EntityManager {
 	}
 	
 	public static boolean deleteFacultyObject(Faculty o) {
-		return FacultyInstances.remove(o);
+		List<Faculty> list = loadList(Faculty.class);
+		if (list.remove(o)) {
+			String json = genson.serialize(list);
+			stub.putStringState("Faculty", json);
+			return true;
+		} else
+			return false;
 	}
 	
 	public static boolean deleteFacultyObjects(List<Faculty> os) {
@@ -273,7 +316,13 @@ public class EntityManager {
 	}
 	
 	public static boolean addBookObject(Book o) {
-		return BookInstances.add(o);
+		List<Book> list = loadList(Book.class);
+		if (list.add(o)) {
+			String json = genson.serialize(list);
+			stub.putStringState("Book", json);
+			return true;
+		} else
+			return false;
 	}
 	
 	public static boolean addBookObjects(List<Book> os) {
@@ -281,7 +330,13 @@ public class EntityManager {
 	}
 	
 	public static boolean deleteBookObject(Book o) {
-		return BookInstances.remove(o);
+		List<Book> list = loadList(Book.class);
+		if (list.remove(o)) {
+			String json = genson.serialize(list);
+			stub.putStringState("Book", json);
+			return true;
+		} else
+			return false;
 	}
 	
 	public static boolean deleteBookObjects(List<Book> os) {
@@ -293,7 +348,13 @@ public class EntityManager {
 	}
 	
 	public static boolean addSubjectObject(Subject o) {
-		return SubjectInstances.add(o);
+		List<Subject> list = loadList(Subject.class);
+		if (list.add(o)) {
+			String json = genson.serialize(list);
+			stub.putStringState("Subject", json);
+			return true;
+		} else
+			return false;
 	}
 	
 	public static boolean addSubjectObjects(List<Subject> os) {
@@ -301,7 +362,13 @@ public class EntityManager {
 	}
 	
 	public static boolean deleteSubjectObject(Subject o) {
-		return SubjectInstances.remove(o);
+		List<Subject> list = loadList(Subject.class);
+		if (list.remove(o)) {
+			String json = genson.serialize(list);
+			stub.putStringState("Subject", json);
+			return true;
+		} else
+			return false;
 	}
 	
 	public static boolean deleteSubjectObjects(List<Subject> os) {
@@ -313,7 +380,13 @@ public class EntityManager {
 	}
 	
 	public static boolean addBookCopyObject(BookCopy o) {
-		return BookCopyInstances.add(o);
+		List<BookCopy> list = loadList(BookCopy.class);
+		if (list.add(o)) {
+			String json = genson.serialize(list);
+			stub.putStringState("BookCopy", json);
+			return true;
+		} else
+			return false;
 	}
 	
 	public static boolean addBookCopyObjects(List<BookCopy> os) {
@@ -321,7 +394,13 @@ public class EntityManager {
 	}
 	
 	public static boolean deleteBookCopyObject(BookCopy o) {
-		return BookCopyInstances.remove(o);
+		List<BookCopy> list = loadList(BookCopy.class);
+		if (list.remove(o)) {
+			String json = genson.serialize(list);
+			stub.putStringState("BookCopy", json);
+			return true;
+		} else
+			return false;
 	}
 	
 	public static boolean deleteBookCopyObjects(List<BookCopy> os) {
@@ -333,7 +412,13 @@ public class EntityManager {
 	}
 	
 	public static boolean addLoanObject(Loan o) {
-		return LoanInstances.add(o);
+		List<Loan> list = loadList(Loan.class);
+		if (list.add(o)) {
+			String json = genson.serialize(list);
+			stub.putStringState("Loan", json);
+			return true;
+		} else
+			return false;
 	}
 	
 	public static boolean addLoanObjects(List<Loan> os) {
@@ -341,7 +426,13 @@ public class EntityManager {
 	}
 	
 	public static boolean deleteLoanObject(Loan o) {
-		return LoanInstances.remove(o);
+		List<Loan> list = loadList(Loan.class);
+		if (list.remove(o)) {
+			String json = genson.serialize(list);
+			stub.putStringState("Loan", json);
+			return true;
+		} else
+			return false;
 	}
 	
 	public static boolean deleteLoanObjects(List<Loan> os) {
@@ -353,7 +444,13 @@ public class EntityManager {
 	}
 	
 	public static boolean addReserveObject(Reserve o) {
-		return ReserveInstances.add(o);
+		List<Reserve> list = loadList(Reserve.class);
+		if (list.add(o)) {
+			String json = genson.serialize(list);
+			stub.putStringState("Reserve", json);
+			return true;
+		} else
+			return false;
 	}
 	
 	public static boolean addReserveObjects(List<Reserve> os) {
@@ -361,7 +458,13 @@ public class EntityManager {
 	}
 	
 	public static boolean deleteReserveObject(Reserve o) {
-		return ReserveInstances.remove(o);
+		List<Reserve> list = loadList(Reserve.class);
+		if (list.remove(o)) {
+			String json = genson.serialize(list);
+			stub.putStringState("Reserve", json);
+			return true;
+		} else
+			return false;
 	}
 	
 	public static boolean deleteReserveObjects(List<Reserve> os) {
@@ -373,7 +476,13 @@ public class EntityManager {
 	}
 	
 	public static boolean addRecommendBookObject(RecommendBook o) {
-		return RecommendBookInstances.add(o);
+		List<RecommendBook> list = loadList(RecommendBook.class);
+		if (list.add(o)) {
+			String json = genson.serialize(list);
+			stub.putStringState("RecommendBook", json);
+			return true;
+		} else
+			return false;
 	}
 	
 	public static boolean addRecommendBookObjects(List<RecommendBook> os) {
@@ -381,7 +490,13 @@ public class EntityManager {
 	}
 	
 	public static boolean deleteRecommendBookObject(RecommendBook o) {
-		return RecommendBookInstances.remove(o);
+		List<RecommendBook> list = loadList(RecommendBook.class);
+		if (list.remove(o)) {
+			String json = genson.serialize(list);
+			stub.putStringState("RecommendBook", json);
+			return true;
+		} else
+			return false;
 	}
 	
 	public static boolean deleteRecommendBookObjects(List<RecommendBook> os) {
@@ -393,7 +508,13 @@ public class EntityManager {
 	}
 	
 	public static boolean addAdministratorObject(Administrator o) {
-		return AdministratorInstances.add(o);
+		List<Administrator> list = loadList(Administrator.class);
+		if (list.add(o)) {
+			String json = genson.serialize(list);
+			stub.putStringState("Administrator", json);
+			return true;
+		} else
+			return false;
 	}
 	
 	public static boolean addAdministratorObjects(List<Administrator> os) {
@@ -401,7 +522,13 @@ public class EntityManager {
 	}
 	
 	public static boolean deleteAdministratorObject(Administrator o) {
-		return AdministratorInstances.remove(o);
+		List<Administrator> list = loadList(Administrator.class);
+		if (list.remove(o)) {
+			String json = genson.serialize(list);
+			stub.putStringState("Administrator", json);
+			return true;
+		} else
+			return false;
 	}
 	
 	public static boolean deleteAdministratorObjects(List<Administrator> os) {
@@ -413,7 +540,13 @@ public class EntityManager {
 	}
 	
 	public static boolean addLibrarianObject(Librarian o) {
-		return LibrarianInstances.add(o);
+		List<Librarian> list = loadList(Librarian.class);
+		if (list.add(o)) {
+			String json = genson.serialize(list);
+			stub.putStringState("Librarian", json);
+			return true;
+		} else
+			return false;
 	}
 	
 	public static boolean addLibrarianObjects(List<Librarian> os) {
@@ -421,12 +554,38 @@ public class EntityManager {
 	}
 	
 	public static boolean deleteLibrarianObject(Librarian o) {
-		return LibrarianInstances.remove(o);
+		List<Librarian> list = loadList(Librarian.class);
+		if (list.remove(o)) {
+			String json = genson.serialize(list);
+			stub.putStringState("Librarian", json);
+			return true;
+		} else
+			return false;
 	}
 	
 	public static boolean deleteLibrarianObjects(List<Librarian> os) {
 		return LibrarianInstances.removeAll(os);
 	}
   
+
+	public static <T> List<T> getAllInstancesOf(Class<T> clazz) {
+		List<T> list = loadList(clazz);
+		return list;
+	}
+
+	private static <T> List<T> loadList(Class<T> clazz) {
+		String key = clazz.getSimpleName();
+		List<T> list = AllInstance.get(key);
+		if (list == null || list.size() == 0) {
+			String json = stub.getStringState(key);
+			System.out.printf("loadList %s: %s\n", key, json);
+			if (json != null && Objects.equals(json, "") == false)
+				list = GensonHelper.deserializeList(genson, json, clazz);
+			else
+				list = new LinkedList<>();
+			AllInstance.put(key, list);
+		}
+		return list;
+	}
 }
 
