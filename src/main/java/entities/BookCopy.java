@@ -8,14 +8,20 @@ import java.util.Arrays;
 import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import org.hyperledger.fabric.contract.annotation.*;
 
+@DataType()
 public class BookCopy implements Serializable {
 	
 	/* all primary attributes */
-	private String Barcode;
-	private CopyStatus Status;
-	private String Location;
-	private boolean IsReserved;
+	@Property()
+	private String barcode;
+	@Property()
+	private CopyStatus status;
+	@Property()
+	private String location;
+	@Property()
+	private boolean isReserved;
 	
 	/* all references */
 	private Book BookBelongs; 
@@ -24,32 +30,32 @@ public class BookCopy implements Serializable {
 	
 	/* all get and set functions */
 	public String getBarcode() {
-		return Barcode;
+		return barcode;
 	}	
 	
 	public void setBarcode(String barcode) {
-		this.Barcode = barcode;
+		this.barcode = barcode;
 	}
 	public CopyStatus getStatus() {
-		return Status;
+		return status;
 	}	
 	
 	public void setStatus(CopyStatus status) {
-		this.Status = status;
+		this.status = status;
 	}
 	public String getLocation() {
-		return Location;
+		return location;
 	}	
 	
 	public void setLocation(String location) {
-		this.Location = location;
+		this.location = location;
 	}
 	public boolean getIsReserved() {
-		return IsReserved;
+		return isReserved;
 	}	
 	
 	public void setIsReserved(boolean isreserved) {
-		this.IsReserved = isreserved;
+		this.isReserved = isreserved;
 	}
 	
 	/* all functions for reference*/

@@ -8,37 +8,42 @@ import java.util.Arrays;
 import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import org.hyperledger.fabric.contract.annotation.*;
 
+@DataType()
 public class Administrator implements Serializable {
 	
 	/* all primary attributes */
-	private String AdminID;
-	private String UserName;
-	private String Password;
+	@Property()
+	private String adminID;
+	@Property()
+	private String userName;
+	@Property()
+	private String password;
 	
 	/* all references */
 	
 	/* all get and set functions */
 	public String getAdminID() {
-		return AdminID;
+		return adminID;
 	}	
 	
 	public void setAdminID(String adminid) {
-		this.AdminID = adminid;
+		this.adminID = adminid;
 	}
 	public String getUserName() {
-		return UserName;
+		return userName;
 	}	
 	
 	public void setUserName(String username) {
-		this.UserName = username;
+		this.userName = username;
 	}
 	public String getPassword() {
-		return Password;
+		return password;
 	}	
 	
 	public void setPassword(String password) {
-		this.Password = password;
+		this.password = password;
 	}
 	
 	/* all functions for reference*/

@@ -8,37 +8,42 @@ import java.util.Arrays;
 import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import org.hyperledger.fabric.contract.annotation.*;
 
+@DataType()
 public class Librarian implements Serializable {
 	
 	/* all primary attributes */
-	private String LibrarianID;
-	private String Name;
-	private String Password;
+	@Property()
+	private String librarianID;
+	@Property()
+	private String name;
+	@Property()
+	private String password;
 	
 	/* all references */
 	
 	/* all get and set functions */
 	public String getLibrarianID() {
-		return LibrarianID;
+		return librarianID;
 	}	
 	
 	public void setLibrarianID(String librarianid) {
-		this.LibrarianID = librarianid;
+		this.librarianID = librarianid;
 	}
 	public String getName() {
-		return Name;
+		return name;
 	}	
 	
 	public void setName(String name) {
-		this.Name = name;
+		this.name = name;
 	}
 	public String getPassword() {
-		return Password;
+		return password;
 	}	
 	
 	public void setPassword(String password) {
-		this.Password = password;
+		this.password = password;
 	}
 	
 	/* all functions for reference*/

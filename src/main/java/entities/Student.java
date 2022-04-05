@@ -8,37 +8,42 @@ import java.util.Arrays;
 import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import org.hyperledger.fabric.contract.annotation.*;
 
+@DataType()
 public class Student extends User  implements Serializable {
 	
 	/* all primary attributes */
-	private String Major;
-	private Programme Programme;
-	private StudentStatus RegistrationStatus;
+	@Property()
+	private String major;
+	@Property()
+	private Programme programme;
+	@Property()
+	private StudentStatus registrationStatus;
 	
 	/* all references */
 	
 	/* all get and set functions */
 	public String getMajor() {
-		return Major;
+		return major;
 	}	
 	
 	public void setMajor(String major) {
-		this.Major = major;
+		this.major = major;
 	}
 	public Programme getProgramme() {
-		return Programme;
+		return programme;
 	}	
 	
 	public void setProgramme(Programme programme) {
-		this.Programme = programme;
+		this.programme = programme;
 	}
 	public StudentStatus getRegistrationStatus() {
-		return RegistrationStatus;
+		return registrationStatus;
 	}	
 	
 	public void setRegistrationStatus(StudentStatus registrationstatus) {
-		this.RegistrationStatus = registrationstatus;
+		this.registrationStatus = registrationstatus;
 	}
 	
 	/* all functions for reference*/

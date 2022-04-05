@@ -8,21 +8,34 @@ import java.util.Arrays;
 import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import org.hyperledger.fabric.contract.annotation.*;
 
+@DataType()
 public class Loan implements Serializable {
 	
 	/* all primary attributes */
-	private LocalDate LoanDate;
-	private LocalDate RenewDate;
-	private LocalDate DueDate;
-	private LocalDate ReturnDate;
-	private int RenewedTimes;
-	private boolean IsReturned;
-	private float OverDueFee;
-	private boolean OverDue3Days;
-	private boolean OverDue10Days;
-	private boolean OverDue17Days;
-	private boolean OverDue31Days;
+	@Property()
+	private LocalDate loanDate;
+	@Property()
+	private LocalDate renewDate;
+	@Property()
+	private LocalDate dueDate;
+	@Property()
+	private LocalDate returnDate;
+	@Property()
+	private int renewedTimes;
+	@Property()
+	private boolean isReturned;
+	@Property()
+	private float overDueFee;
+	@Property()
+	private boolean overDue3Days;
+	@Property()
+	private boolean overDue10Days;
+	@Property()
+	private boolean overDue17Days;
+	@Property()
+	private boolean overDue31Days;
 	
 	/* all references */
 	private User LoanedUser; 
@@ -32,81 +45,81 @@ public class Loan implements Serializable {
 	
 	/* all get and set functions */
 	public LocalDate getLoanDate() {
-		return LoanDate;
+		return loanDate;
 	}	
 	
 	public void setLoanDate(LocalDate loandate) {
-		this.LoanDate = loandate;
+		this.loanDate = loandate;
 	}
 	public LocalDate getRenewDate() {
-		return RenewDate;
+		return renewDate;
 	}	
 	
 	public void setRenewDate(LocalDate renewdate) {
-		this.RenewDate = renewdate;
+		this.renewDate = renewdate;
 	}
 	public LocalDate getDueDate() {
-		return DueDate;
+		return dueDate;
 	}	
 	
 	public void setDueDate(LocalDate duedate) {
-		this.DueDate = duedate;
+		this.dueDate = duedate;
 	}
 	public LocalDate getReturnDate() {
-		return ReturnDate;
+		return returnDate;
 	}	
 	
 	public void setReturnDate(LocalDate returndate) {
-		this.ReturnDate = returndate;
+		this.returnDate = returndate;
 	}
 	public int getRenewedTimes() {
-		return RenewedTimes;
+		return renewedTimes;
 	}	
 	
 	public void setRenewedTimes(int renewedtimes) {
-		this.RenewedTimes = renewedtimes;
+		this.renewedTimes = renewedtimes;
 	}
 	public boolean getIsReturned() {
-		return IsReturned;
+		return isReturned;
 	}	
 	
 	public void setIsReturned(boolean isreturned) {
-		this.IsReturned = isreturned;
+		this.isReturned = isreturned;
 	}
 	public float getOverDueFee() {
-		return OverDueFee;
+		return overDueFee;
 	}	
 	
 	public void setOverDueFee(float overduefee) {
-		this.OverDueFee = overduefee;
+		this.overDueFee = overduefee;
 	}
 	public boolean getOverDue3Days() {
-		return OverDue3Days;
+		return overDue3Days;
 	}	
 	
 	public void setOverDue3Days(boolean overdue3days) {
-		this.OverDue3Days = overdue3days;
+		this.overDue3Days = overdue3days;
 	}
 	public boolean getOverDue10Days() {
-		return OverDue10Days;
+		return overDue10Days;
 	}	
 	
 	public void setOverDue10Days(boolean overdue10days) {
-		this.OverDue10Days = overdue10days;
+		this.overDue10Days = overdue10days;
 	}
 	public boolean getOverDue17Days() {
-		return OverDue17Days;
+		return overDue17Days;
 	}	
 	
 	public void setOverDue17Days(boolean overdue17days) {
-		this.OverDue17Days = overdue17days;
+		this.overDue17Days = overdue17days;
 	}
 	public boolean getOverDue31Days() {
-		return OverDue31Days;
+		return overDue31Days;
 	}	
 	
 	public void setOverDue31Days(boolean overdue31days) {
-		this.OverDue31Days = overdue31days;
+		this.overDue31Days = overdue31days;
 	}
 	
 	/* all functions for reference*/
@@ -143,7 +156,7 @@ public class Loan implements Serializable {
 	/* invarints checking*/
 	public boolean Loan_OverDueFeeGreatThanEqualZero() {
 		
-		if (OverDueFee >= 0) {
+		if (overDueFee >= 0) {
 			return true;
 		} else {
 			return false;
@@ -152,7 +165,7 @@ public class Loan implements Serializable {
 	
 	public boolean Loan_RenewedTimesLessThanEqualSix() {
 		
-		if (RenewedTimes >= 0 && RenewedTimes <= 6) {
+		if (renewedTimes >= 0 && renewedTimes <= 6) {
 			return true;
 		} else {
 			return false;
@@ -161,7 +174,7 @@ public class Loan implements Serializable {
 	
 	public boolean Loan_LoanOverDueFeeGreatThanEqualZero() {
 		
-		if (OverDueFee >= 0) {
+		if (overDueFee >= 0) {
 			return true;
 		} else {
 			return false;
@@ -170,7 +183,7 @@ public class Loan implements Serializable {
 	
 	public boolean Loan_RenewDataAfterLoanDate() {
 		
-		if (((StandardOPs.oclIsundefined(RenewDate) == false) ? RenewDate.isAfter(LoanDate) : true)) {
+		if (((StandardOPs.oclIsundefined(renewDate) == false) ? renewDate.isAfter(loanDate) : true)) {
 			return true;
 		} else {
 			return false;
@@ -179,7 +192,7 @@ public class Loan implements Serializable {
 	
 	public boolean Loan_DueDateAfterLoanDate() {
 		
-		if (DueDate.isAfter(LoanDate)) {
+		if (dueDate.isAfter(loanDate)) {
 			return true;
 		} else {
 			return false;
@@ -188,7 +201,7 @@ public class Loan implements Serializable {
 	
 	public boolean Loan_ReturnDateAfterORSameLoanDate() {
 		
-		if (((StandardOPs.oclIsundefined(ReturnDate) == false) ? ReturnDate.isAfter(LoanDate) || ReturnDate.isEqual(LoanDate) : true)) {
+		if (((StandardOPs.oclIsundefined(returnDate) == false) ? returnDate.isAfter(loanDate) || returnDate.isEqual(loanDate) : true)) {
 			return true;
 		} else {
 			return false;
@@ -197,7 +210,7 @@ public class Loan implements Serializable {
 	
 	public boolean Loan_DueDateAfterORSameRenewDate() {
 		
-		if (((StandardOPs.oclIsundefined(RenewDate) == false) ? DueDate.isAfter(RenewDate) || DueDate.isEqual(RenewDate) : true)) {
+		if (((StandardOPs.oclIsundefined(renewDate) == false) ? dueDate.isAfter(renewDate) || dueDate.isEqual(renewDate) : true)) {
 			return true;
 		} else {
 			return false;
@@ -206,7 +219,7 @@ public class Loan implements Serializable {
 	
 	public boolean Loan_ReturnDateSameORAfterRenewDate() {
 		
-		if (((StandardOPs.oclIsundefined(RenewDate) == false && StandardOPs.oclIsundefined(ReturnDate) == false) ? ReturnDate.isAfter(RenewDate) || ReturnDate.isEqual(RenewDate) : true)) {
+		if (((StandardOPs.oclIsundefined(renewDate) == false && StandardOPs.oclIsundefined(returnDate) == false) ? returnDate.isAfter(renewDate) || returnDate.isEqual(renewDate) : true)) {
 			return true;
 		} else {
 			return false;

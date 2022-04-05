@@ -8,29 +8,33 @@ import java.util.Arrays;
 import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import org.hyperledger.fabric.contract.annotation.*;
 
+@DataType()
 public class Faculty extends User  implements Serializable {
 	
 	/* all primary attributes */
-	private FacultyPosition Position;
-	private FacultyStatus Status;
+	@Property()
+	private FacultyPosition position;
+	@Property()
+	private FacultyStatus status;
 	
 	/* all references */
 	
 	/* all get and set functions */
 	public FacultyPosition getPosition() {
-		return Position;
+		return position;
 	}	
 	
 	public void setPosition(FacultyPosition position) {
-		this.Position = position;
+		this.position = position;
 	}
 	public FacultyStatus getStatus() {
-		return Status;
+		return status;
 	}	
 	
 	public void setStatus(FacultyStatus status) {
-		this.Status = status;
+		this.status = status;
 	}
 	
 	/* all functions for reference*/

@@ -8,18 +8,28 @@ import java.util.Arrays;
 import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import org.hyperledger.fabric.contract.annotation.*;
 
+@DataType()
 public class Book implements Serializable {
 	
 	/* all primary attributes */
-	private String CallNo;
-	private String Title;
-	private String Edition;
-	private String Author;
-	private String Publisher;
-	private String Description;
-	private String ISBn;
-	private int CopyNum;
+	@Property()
+	private String callNo;
+	@Property()
+	private String title;
+	@Property()
+	private String edition;
+	@Property()
+	private String author;
+	@Property()
+	private String publisher;
+	@Property()
+	private String description;
+	@Property()
+	private String iSBn;
+	@Property()
+	private int copyNum;
 	
 	/* all references */
 	private List<BookCopy> Copys = new LinkedList<BookCopy>(); 
@@ -27,60 +37,60 @@ public class Book implements Serializable {
 	
 	/* all get and set functions */
 	public String getCallNo() {
-		return CallNo;
+		return callNo;
 	}	
 	
 	public void setCallNo(String callno) {
-		this.CallNo = callno;
+		this.callNo = callno;
 	}
 	public String getTitle() {
-		return Title;
+		return title;
 	}	
 	
 	public void setTitle(String title) {
-		this.Title = title;
+		this.title = title;
 	}
 	public String getEdition() {
-		return Edition;
+		return edition;
 	}	
 	
 	public void setEdition(String edition) {
-		this.Edition = edition;
+		this.edition = edition;
 	}
 	public String getAuthor() {
-		return Author;
+		return author;
 	}	
 	
 	public void setAuthor(String author) {
-		this.Author = author;
+		this.author = author;
 	}
 	public String getPublisher() {
-		return Publisher;
+		return publisher;
 	}	
 	
 	public void setPublisher(String publisher) {
-		this.Publisher = publisher;
+		this.publisher = publisher;
 	}
 	public String getDescription() {
-		return Description;
+		return description;
 	}	
 	
 	public void setDescription(String description) {
-		this.Description = description;
+		this.description = description;
 	}
 	public String getISBn() {
-		return ISBn;
+		return iSBn;
 	}	
 	
 	public void setISBn(String isbn) {
-		this.ISBn = isbn;
+		this.iSBn = isbn;
 	}
 	public int getCopyNum() {
-		return CopyNum;
+		return copyNum;
 	}	
 	
 	public void setCopyNum(int copynum) {
-		this.CopyNum = copynum;
+		this.copyNum = copynum;
 	}
 	
 	/* all functions for reference*/
@@ -129,7 +139,7 @@ public class Book implements Serializable {
 	
 	public boolean Book_BookCopyNumGreatThanEqualZero() {
 		
-		if (CopyNum >= 0) {
+		if (copyNum >= 0) {
 			return true;
 		} else {
 			return false;

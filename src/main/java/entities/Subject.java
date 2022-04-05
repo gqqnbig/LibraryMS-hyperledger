@@ -8,11 +8,14 @@ import java.util.Arrays;
 import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import org.hyperledger.fabric.contract.annotation.*;
 
+@DataType()
 public class Subject implements Serializable {
 	
 	/* all primary attributes */
-	private String Name;
+	@Property()
+	private String name;
 	
 	/* all references */
 	private Subject SuperSubject; 
@@ -20,11 +23,11 @@ public class Subject implements Serializable {
 	
 	/* all get and set functions */
 	public String getName() {
-		return Name;
+		return name;
 	}	
 	
 	public void setName(String name) {
-		this.Name = name;
+		this.name = name;
 	}
 	
 	/* all functions for reference*/

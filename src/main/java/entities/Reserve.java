@@ -8,12 +8,16 @@ import java.util.Arrays;
 import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import org.hyperledger.fabric.contract.annotation.*;
 
+@DataType()
 public class Reserve implements Serializable {
 	
 	/* all primary attributes */
-	private LocalDate ReserveDate;
-	private boolean IsReserveClosed;
+	@Property()
+	private LocalDate reserveDate;
+	@Property()
+	private boolean isReserveClosed;
 	
 	/* all references */
 	private BookCopy ReservedCopy; 
@@ -21,18 +25,18 @@ public class Reserve implements Serializable {
 	
 	/* all get and set functions */
 	public LocalDate getReserveDate() {
-		return ReserveDate;
+		return reserveDate;
 	}	
 	
 	public void setReserveDate(LocalDate reservedate) {
-		this.ReserveDate = reservedate;
+		this.reserveDate = reservedate;
 	}
 	public boolean getIsReserveClosed() {
-		return IsReserveClosed;
+		return isReserveClosed;
 	}	
 	
 	public void setIsReserveClosed(boolean isreserveclosed) {
-		this.IsReserveClosed = isreserveclosed;
+		this.isReserveClosed = isreserveclosed;
 	}
 	
 	/* all functions for reference*/

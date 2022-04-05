@@ -8,22 +8,25 @@ import java.util.Arrays;
 import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import org.hyperledger.fabric.contract.annotation.*;
 
+@DataType()
 public class RecommendBook extends Book  implements Serializable {
 	
 	/* all primary attributes */
-	private LocalDate RecommendDate;
+	@Property()
+	private LocalDate recommendDate;
 	
 	/* all references */
 	private User RecommendUser; 
 	
 	/* all get and set functions */
 	public LocalDate getRecommendDate() {
-		return RecommendDate;
+		return recommendDate;
 	}	
 	
 	public void setRecommendDate(LocalDate recommenddate) {
-		this.RecommendDate = recommenddate;
+		this.recommendDate = recommenddate;
 	}
 	
 	/* all functions for reference*/

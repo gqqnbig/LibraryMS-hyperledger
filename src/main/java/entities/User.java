@@ -8,20 +8,32 @@ import java.util.Arrays;
 import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import org.hyperledger.fabric.contract.annotation.*;
 
+@DataType()
 public class User implements Serializable {
 	
 	/* all primary attributes */
-	private String UserID;
-	private String Name;
-	private Sex Sex;
-	private String Password;
-	private String Email;
-	private String Faculty;
-	private int LoanedNumber;
-	private BorrowStatus BorrowStatus;
-	private int SuspensionDays;
-	private float OverDueFee;
+	@Property()
+	private String userID;
+	@Property()
+	private String name;
+	@Property()
+	private Sex sex;
+	@Property()
+	private String password;
+	@Property()
+	private String email;
+	@Property()
+	private String faculty;
+	@Property()
+	private int loanedNumber;
+	@Property()
+	private BorrowStatus borrowStatus;
+	@Property()
+	private int suspensionDays;
+	@Property()
+	private float overDueFee;
 	
 	/* all references */
 	private List<Loan> LoanedBook = new LinkedList<Loan>(); 
@@ -30,74 +42,74 @@ public class User implements Serializable {
 	
 	/* all get and set functions */
 	public String getUserID() {
-		return UserID;
+		return userID;
 	}	
 	
 	public void setUserID(String userid) {
-		this.UserID = userid;
+		this.userID = userid;
 	}
 	public String getName() {
-		return Name;
+		return name;
 	}	
 	
 	public void setName(String name) {
-		this.Name = name;
+		this.name = name;
 	}
 	public Sex getSex() {
-		return Sex;
+		return sex;
 	}	
 	
 	public void setSex(Sex sex) {
-		this.Sex = sex;
+		this.sex = sex;
 	}
 	public String getPassword() {
-		return Password;
+		return password;
 	}	
 	
 	public void setPassword(String password) {
-		this.Password = password;
+		this.password = password;
 	}
 	public String getEmail() {
-		return Email;
+		return email;
 	}	
 	
 	public void setEmail(String email) {
-		this.Email = email;
+		this.email = email;
 	}
 	public String getFaculty() {
-		return Faculty;
+		return faculty;
 	}	
 	
 	public void setFaculty(String faculty) {
-		this.Faculty = faculty;
+		this.faculty = faculty;
 	}
 	public int getLoanedNumber() {
-		return LoanedNumber;
+		return loanedNumber;
 	}	
 	
 	public void setLoanedNumber(int loanednumber) {
-		this.LoanedNumber = loanednumber;
+		this.loanedNumber = loanednumber;
 	}
 	public BorrowStatus getBorrowStatus() {
-		return BorrowStatus;
+		return borrowStatus;
 	}	
 	
 	public void setBorrowStatus(BorrowStatus borrowstatus) {
-		this.BorrowStatus = borrowstatus;
+		this.borrowStatus = borrowstatus;
 	}
 	public int getSuspensionDays() {
-		return SuspensionDays;
+		return suspensionDays;
 	}	
 	
 	public void setSuspensionDays(int suspensiondays) {
-		this.SuspensionDays = suspensiondays;
+		this.suspensionDays = suspensiondays;
 	}
 	public float getOverDueFee() {
-		return OverDueFee;
+		return overDueFee;
 	}	
 	
 	public void setOverDueFee(float overduefee) {
-		this.OverDueFee = overduefee;
+		this.overDueFee = overduefee;
 	}
 	
 	/* all functions for reference*/
@@ -148,7 +160,7 @@ public class User implements Serializable {
 	
 	public boolean User_OverDueFeeGreatThanEqualZero() {
 		
-		if (OverDueFee >= 0) {
+		if (overDueFee >= 0) {
 			return true;
 		} else {
 			return false;
@@ -157,7 +169,7 @@ public class User implements Serializable {
 	
 	public boolean User_LoanedNumberGreatThanEqualZero() {
 		
-		if (LoanedNumber >= 0) {
+		if (loanedNumber >= 0) {
 			return true;
 		} else {
 			return false;
@@ -166,7 +178,7 @@ public class User implements Serializable {
 	
 	public boolean User_SuspensionDaysGreatThanEqualZero() {
 		
-		if (SuspensionDays >= 0) {
+		if (suspensionDays >= 0) {
 			return true;
 		} else {
 			return false;
