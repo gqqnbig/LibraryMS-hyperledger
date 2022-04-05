@@ -38,9 +38,7 @@ public class ThirdPartyServicesImpl implements ThirdPartyServices, Serializable,
 	
 	
 	/* Generate inject for sharing temp variables between use cases in system service */
-	public void refresh() {
-		LibraryManagementSystemSystem librarymanagementsystemsystem_service = (LibraryManagementSystemSystem) ServiceManager.getAllInstancesOf(LibraryManagementSystemSystem.class).get(0);
-	}
+	
 	
 	/* Generate buiness logic according to functional requirement */
 	
@@ -65,7 +63,7 @@ public class ThirdPartyServicesImpl implements ThirdPartyServices, Serializable,
 			/* Logic here */
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true)) {
 				throw new PostconditionException();
@@ -73,7 +71,7 @@ public class ThirdPartyServicesImpl implements ThirdPartyServices, Serializable,
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else

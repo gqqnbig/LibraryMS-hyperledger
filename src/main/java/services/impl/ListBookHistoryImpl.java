@@ -43,9 +43,7 @@ public class ListBookHistoryImpl implements ListBookHistory, Serializable, Contr
 	
 	
 	/* Generate inject for sharing temp variables between use cases in system service */
-	public void refresh() {
-		LibraryManagementSystemSystem librarymanagementsystemsystem_service = (LibraryManagementSystemSystem) ServiceManager.getAllInstancesOf(LibraryManagementSystemSystem.class).get(0);
-	}
+	
 	
 	/* Generate buiness logic according to functional requirement */
 	
@@ -84,13 +82,13 @@ public class ListBookHistoryImpl implements ListBookHistory, Serializable, Contr
 			/* Logic here */
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true)) {
 				throw new PostconditionException();
 			}
 			
-			refresh(); return user.getLoanedBook();
+			; return user.getLoanedBook();
 		}
 		else
 		{
@@ -148,13 +146,13 @@ public class ListBookHistoryImpl implements ListBookHistory, Serializable, Contr
 			}
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true)) {
 				throw new PostconditionException();
 			}
 			
-			refresh(); return tempsl;
+			; return tempsl;
 		}
 		else
 		{
@@ -221,13 +219,13 @@ public class ListBookHistoryImpl implements ListBookHistory, Serializable, Contr
 			}
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true)) {
 				throw new PostconditionException();
 			}
 			
-			refresh(); return temps;
+			; return temps;
 		}
 		else
 		{
@@ -282,13 +280,13 @@ public class ListBookHistoryImpl implements ListBookHistory, Serializable, Contr
 			}
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true)) {
 				throw new PostconditionException();
 			}
 			
-			refresh(); return temps;
+			; return temps;
 		}
 		else
 		{
@@ -337,13 +335,13 @@ public class ListBookHistoryImpl implements ListBookHistory, Serializable, Contr
 			/* Logic here */
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true)) {
 				throw new PostconditionException();
 			}
 			
-			refresh(); return rBooks;
+			; return rBooks;
 		}
 		else
 		{
