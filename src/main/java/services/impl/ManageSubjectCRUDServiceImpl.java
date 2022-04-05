@@ -43,9 +43,7 @@ public class ManageSubjectCRUDServiceImpl implements ManageSubjectCRUDService, S
 	
 	
 	/* Generate inject for sharing temp variables between use cases in system service */
-	public void refresh() {
-		LibraryManagementSystemSystem librarymanagementsystemsystem_service = (LibraryManagementSystemSystem) ServiceManager.getAllInstancesOf(LibraryManagementSystemSystem.class).get(0);
-	}
+	
 	
 	/* Generate buiness logic according to functional requirement */
 	
@@ -88,7 +86,7 @@ public class ManageSubjectCRUDServiceImpl implements ManageSubjectCRUDService, S
 			EntityManager.addObject("Subject", sub);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			sub.getName() == name
@@ -101,7 +99,7 @@ public class ManageSubjectCRUDServiceImpl implements ManageSubjectCRUDService, S
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -151,13 +149,13 @@ public class ManageSubjectCRUDServiceImpl implements ManageSubjectCRUDService, S
 			/* Logic here */
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true)) {
 				throw new PostconditionException();
 			}
 			
-			refresh(); return subject;
+			; return subject;
 		}
 		else
 		{
@@ -204,17 +202,19 @@ public class ManageSubjectCRUDServiceImpl implements ManageSubjectCRUDService, S
 			subject.setName(name);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(subject.getName() == name
 			 && 
+			EntityManager.saveModified(Subject.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -265,7 +265,7 @@ public class ManageSubjectCRUDServiceImpl implements ManageSubjectCRUDService, S
 			EntityManager.deleteObject("Subject", subject);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(StandardOPs.excludes(((List<Subject>)EntityManager.getAllInstancesOf(Subject.class)), subject)
 			 && 
@@ -275,7 +275,7 @@ public class ManageSubjectCRUDServiceImpl implements ManageSubjectCRUDService, S
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else

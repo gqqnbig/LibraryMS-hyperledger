@@ -43,9 +43,7 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 	
 	
 	/* Generate inject for sharing temp variables between use cases in system service */
-	public void refresh() {
-		LibraryManagementSystemSystem librarymanagementsystemsystem_service = (LibraryManagementSystemSystem) ServiceManager.getAllInstancesOf(LibraryManagementSystemSystem.class).get(0);
-	}
+	
 	
 	/* Generate buiness logic according to functional requirement */
 	
@@ -97,7 +95,7 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 			EntityManager.addObject("User", use);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			use.getUserID() == userid
@@ -128,7 +126,7 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -178,13 +176,13 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 			/* Logic here */
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true)) {
 				throw new PostconditionException();
 			}
 			
-			refresh(); return user;
+			; return user;
 		}
 		else
 		{
@@ -240,7 +238,7 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 			user.setOverDueFee(overduefee);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(user.getUserID() == userid
 			 && 
@@ -262,13 +260,15 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 			 && 
 			user.getOverDueFee() == overduefee
 			 && 
+			EntityManager.saveModified(User.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -319,7 +319,7 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 			EntityManager.deleteObject("User", user);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(StandardOPs.excludes(((List<User>)EntityManager.getAllInstancesOf(User.class)), user)
 			 && 
@@ -329,7 +329,7 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -396,7 +396,7 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 			EntityManager.addObject("Student", u);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			u.getUserID() == userID
@@ -435,7 +435,7 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -501,7 +501,7 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 			EntityManager.addObject("Faculty", u);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			u.getUserID() == userID
@@ -538,7 +538,7 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -601,7 +601,7 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 			user.setRegistrationStatus(registrationStatus);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(user.getUserID() == userID
 			 && 
@@ -629,13 +629,15 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 			 && 
 			user.getRegistrationStatus() == registrationStatus
 			 && 
+			EntityManager.saveModified(Student.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -697,7 +699,7 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 			user.setStatus(status);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(user.getUserID() == userID
 			 && 
@@ -723,13 +725,15 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 			 && 
 			user.getStatus() == status
 			 && 
+			EntityManager.saveModified(Faculty.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else

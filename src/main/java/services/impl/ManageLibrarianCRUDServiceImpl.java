@@ -43,9 +43,7 @@ public class ManageLibrarianCRUDServiceImpl implements ManageLibrarianCRUDServic
 	
 	
 	/* Generate inject for sharing temp variables between use cases in system service */
-	public void refresh() {
-		LibraryManagementSystemSystem librarymanagementsystemsystem_service = (LibraryManagementSystemSystem) ServiceManager.getAllInstancesOf(LibraryManagementSystemSystem.class).get(0);
-	}
+	
 	
 	/* Generate buiness logic according to functional requirement */
 	
@@ -90,7 +88,7 @@ public class ManageLibrarianCRUDServiceImpl implements ManageLibrarianCRUDServic
 			EntityManager.addObject("Librarian", lib);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			lib.getLibrarianID() == librarianid
@@ -107,7 +105,7 @@ public class ManageLibrarianCRUDServiceImpl implements ManageLibrarianCRUDServic
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -157,13 +155,13 @@ public class ManageLibrarianCRUDServiceImpl implements ManageLibrarianCRUDServic
 			/* Logic here */
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true)) {
 				throw new PostconditionException();
 			}
 			
-			refresh(); return librarian;
+			; return librarian;
 		}
 		else
 		{
@@ -212,7 +210,7 @@ public class ManageLibrarianCRUDServiceImpl implements ManageLibrarianCRUDServic
 			librarian.setPassword(password);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(librarian.getLibrarianID() == librarianid
 			 && 
@@ -220,13 +218,15 @@ public class ManageLibrarianCRUDServiceImpl implements ManageLibrarianCRUDServic
 			 && 
 			librarian.getPassword() == password
 			 && 
+			EntityManager.saveModified(Librarian.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -277,7 +277,7 @@ public class ManageLibrarianCRUDServiceImpl implements ManageLibrarianCRUDServic
 			EntityManager.deleteObject("Librarian", librarian);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(StandardOPs.excludes(((List<Librarian>)EntityManager.getAllInstancesOf(Librarian.class)), librarian)
 			 && 
@@ -287,7 +287,7 @@ public class ManageLibrarianCRUDServiceImpl implements ManageLibrarianCRUDServic
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else

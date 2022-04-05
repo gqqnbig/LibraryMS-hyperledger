@@ -43,9 +43,7 @@ public class ManageBookCopyCRUDServiceImpl implements ManageBookCopyCRUDService,
 	
 	
 	/* Generate inject for sharing temp variables between use cases in system service */
-	public void refresh() {
-		LibraryManagementSystemSystem librarymanagementsystemsystem_service = (LibraryManagementSystemSystem) ServiceManager.getAllInstancesOf(LibraryManagementSystemSystem.class).get(0);
-	}
+	
 	
 	/* Generate buiness logic according to functional requirement */
 	
@@ -111,7 +109,7 @@ public class ManageBookCopyCRUDServiceImpl implements ManageBookCopyCRUDService,
 			EntityManager.addObject("BookCopy", copy);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			copy.getBarcode() == barcode
@@ -130,13 +128,15 @@ public class ManageBookCopyCRUDServiceImpl implements ManageBookCopyCRUDService,
 			 && 
 			StandardOPs.includes(((List<BookCopy>)EntityManager.getAllInstancesOf(BookCopy.class)), copy)
 			 && 
+			EntityManager.saveModified(Book.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -186,13 +186,13 @@ public class ManageBookCopyCRUDServiceImpl implements ManageBookCopyCRUDService,
 			/* Logic here */
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true)) {
 				throw new PostconditionException();
 			}
 			
-			refresh(); return bookcopy;
+			; return bookcopy;
 		}
 		else
 		{
@@ -242,7 +242,7 @@ public class ManageBookCopyCRUDServiceImpl implements ManageBookCopyCRUDService,
 			bookcopy.setIsReserved(isreserved);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(bookcopy.getBarcode() == barcode
 			 && 
@@ -252,13 +252,15 @@ public class ManageBookCopyCRUDServiceImpl implements ManageBookCopyCRUDService,
 			 && 
 			bookcopy.getIsReserved() == isreserved
 			 && 
+			EntityManager.saveModified(BookCopy.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -309,7 +311,7 @@ public class ManageBookCopyCRUDServiceImpl implements ManageBookCopyCRUDService,
 			EntityManager.deleteObject("BookCopy", bookcopy);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(StandardOPs.excludes(((List<BookCopy>)EntityManager.getAllInstancesOf(BookCopy.class)), bookcopy)
 			 && 
@@ -319,7 +321,7 @@ public class ManageBookCopyCRUDServiceImpl implements ManageBookCopyCRUDService,
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else

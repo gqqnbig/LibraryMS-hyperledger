@@ -43,9 +43,7 @@ public class ManageBookCRUDServiceImpl implements ManageBookCRUDService, Seriali
 	
 	
 	/* Generate inject for sharing temp variables between use cases in system service */
-	public void refresh() {
-		LibraryManagementSystemSystem librarymanagementsystemsystem_service = (LibraryManagementSystemSystem) ServiceManager.getAllInstancesOf(LibraryManagementSystemSystem.class).get(0);
-	}
+	
 	
 	/* Generate buiness logic according to functional requirement */
 	
@@ -95,7 +93,7 @@ public class ManageBookCRUDServiceImpl implements ManageBookCRUDService, Seriali
 			EntityManager.addObject("Book", boo);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			boo.getCallNo() == callno
@@ -122,7 +120,7 @@ public class ManageBookCRUDServiceImpl implements ManageBookCRUDService, Seriali
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -172,13 +170,13 @@ public class ManageBookCRUDServiceImpl implements ManageBookCRUDService, Seriali
 			/* Logic here */
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true)) {
 				throw new PostconditionException();
 			}
 			
-			refresh(); return book;
+			; return book;
 		}
 		else
 		{
@@ -232,7 +230,7 @@ public class ManageBookCRUDServiceImpl implements ManageBookCRUDService, Seriali
 			book.setCopyNum(copynum);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(book.getCallNo() == callno
 			 && 
@@ -250,13 +248,15 @@ public class ManageBookCRUDServiceImpl implements ManageBookCRUDService, Seriali
 			 && 
 			book.getCopyNum() == copynum
 			 && 
+			EntityManager.saveModified(Book.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -307,7 +307,7 @@ public class ManageBookCRUDServiceImpl implements ManageBookCRUDService, Seriali
 			EntityManager.deleteObject("Book", book);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(StandardOPs.excludes(((List<Book>)EntityManager.getAllInstancesOf(Book.class)), book)
 			 && 
@@ -317,7 +317,7 @@ public class ManageBookCRUDServiceImpl implements ManageBookCRUDService, Seriali
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else

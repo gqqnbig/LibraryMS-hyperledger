@@ -33,22 +33,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		services = new ThirdPartyServicesImpl();
 	}
 
-	public void refresh() {
-		ListBookHistory listbookhistory_service = (ListBookHistory) ServiceManager
-				.getAllInstancesOf(ListBookHistory.class).get(0);
-		SearchBook searchbook_service = (SearchBook) ServiceManager
-				.getAllInstancesOf(SearchBook.class).get(0);
-		ManageUserCRUDService manageusercrudservice_service = (ManageUserCRUDService) ServiceManager
-				.getAllInstancesOf(ManageUserCRUDService.class).get(0);
-		ManageBookCRUDService managebookcrudservice_service = (ManageBookCRUDService) ServiceManager
-				.getAllInstancesOf(ManageBookCRUDService.class).get(0);
-		ManageSubjectCRUDService managesubjectcrudservice_service = (ManageSubjectCRUDService) ServiceManager
-				.getAllInstancesOf(ManageSubjectCRUDService.class).get(0);
-		ManageBookCopyCRUDService managebookcopycrudservice_service = (ManageBookCopyCRUDService) ServiceManager
-				.getAllInstancesOf(ManageBookCopyCRUDService.class).get(0);
-		ManageLibrarianCRUDService managelibrariancrudservice_service = (ManageLibrarianCRUDService) ServiceManager
-				.getAllInstancesOf(ManageLibrarianCRUDService.class).get(0);
-	}			
+				
 	
 	/* Generate buiness logic according to functional requirement */
 	
@@ -113,7 +98,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 			EntityManager.addObject("RecommendBook", r);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			r.getCallNo() == callNo
@@ -138,13 +123,15 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 			 && 
 			StandardOPs.includes(((List<RecommendBook>)EntityManager.getAllInstancesOf(RecommendBook.class)), r)
 			 && 
+			EntityManager.saveModified(User.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -194,13 +181,13 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 			/* Logic here */
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true)) {
 				throw new PostconditionException();
 			}
 			
-			refresh(); return bookcopy;
+			; return bookcopy;
 		}
 		else
 		{
@@ -273,7 +260,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 			EntityManager.addObject("BookCopy", copy);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			copy.getBarcode() == barcode
@@ -292,13 +279,15 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 			 && 
 			StandardOPs.includes(((List<BookCopy>)EntityManager.getAllInstancesOf(BookCopy.class)), copy)
 			 && 
+			EntityManager.saveModified(Book.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -349,7 +338,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 			EntityManager.deleteObject("BookCopy", bookcopy);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(StandardOPs.excludes(((List<BookCopy>)EntityManager.getAllInstancesOf(BookCopy.class)), bookcopy)
 			 && 
@@ -359,7 +348,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -432,7 +421,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 			EntityManager.addObject("Reserve", res);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			copy.getIsReserved() == true
@@ -451,13 +440,15 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 			 && 
 			StandardOPs.includes(((List<Reserve>)EntityManager.getAllInstancesOf(Reserve.class)), res)
 			 && 
+			EntityManager.saveModified(BookCopy.class) && EntityManager.saveModified(User.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -535,19 +526,21 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 			res.setIsReserveClosed(true);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(copy.getIsReserved() == false
 			 && 
 			res.getIsReserveClosed() == true
 			 && 
+			EntityManager.saveModified(Reserve.class) && EntityManager.saveModified(BookCopy.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -682,7 +675,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 			EntityManager.addObject("Loan", loan);
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(true && 
 			loan.getLoanedUser() == user
@@ -717,13 +710,15 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 			 && 
 			StandardOPs.includes(((List<Loan>)EntityManager.getAllInstancesOf(Loan.class)), loan)
 			 && 
+			EntityManager.saveModified(Reserve.class) && EntityManager.saveModified(BookCopy.class) && EntityManager.saveModified(User.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -853,7 +848,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 			}
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(loan.getRenewedTimes() == Pre_loan.getRenewedTimes()+1
 			 && 
@@ -861,13 +856,15 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 			 && 
 			(user instanceof Student ? (stu.getProgramme() == Programme.BACHELOR ? loan.getDueDate() == loan.getDueDate().plusDays(20) : (stu.getProgramme() == Programme.MASTER ? loan.getDueDate() == loan.getDueDate().plusDays(40) : loan.getDueDate() == loan.getDueDate().plusDays(60))) : loan.getDueDate() == loan.getDueDate().plusDays(60))
 			 && 
+			EntityManager.saveModified(Loan.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -971,7 +968,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 			}
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(loan.getLoanedUser().getLoanedNumber() == Pre_loan.getLoanedUser().getLoanedNumber()-1
 			 && 
@@ -983,13 +980,15 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 			 && 
 			true : copy.getStatus() == CopyStatus.AVAILABLE)
 			 && 
+			EntityManager.saveModified(BookCopy.class) && EntityManager.saveModified(Loan.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -1057,7 +1056,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 			}
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(user.getOverDueFee() == 0
 			 && 
@@ -1070,13 +1069,15 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 				return true;
 			}).getAsBoolean()
 			 && 
+			EntityManager.saveModified(User.class)
+			 &&
 			true)) {
 				throw new PostconditionException();
 			}
 			
 		
 			//return primitive type
-			refresh();				
+			;				
 			return true;
 		}
 		else
@@ -1161,7 +1162,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 			}
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(((Predicate<List>) (list) -> {	
 				Iterator<Loan> loanIt =  list.iterator();
@@ -1215,7 +1216,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 				throw new PostconditionException();
 			}
 			
-			refresh(); //no return type 
+			; //no return type 
 		}
 		else
 		{
@@ -1271,7 +1272,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 			}
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(((BooleanSupplier) () -> {							
 				for (User u : users) {
@@ -1285,7 +1286,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 				throw new PostconditionException();
 			}
 			
-			refresh(); //no return type 
+			; //no return type 
 		}
 		else
 		{
@@ -1347,7 +1348,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 			}
 			
 			
-			refresh();
+			;
 			// post-condition checking
 			if (!(((Predicate<List>) (list) -> {	
 				Iterator<User> uIt =  list.iterator();
@@ -1373,7 +1374,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 				throw new PostconditionException();
 			}
 			
-			refresh(); //no return type 
+			; //no return type 
 		}
 		else
 		{
