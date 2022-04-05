@@ -29,7 +29,11 @@ public class Reserve implements Serializable {
 	private boolean isReserveClosed;
 	
 	/* all references */
+	@JsonProperty
+	private Object ReservedCopyPK;
 	private BookCopy ReservedCopy; 
+	@JsonProperty
+	private Object ReservedUserPK;
 	private User ReservedUser; 
 	
 	/* all get and set functions */
@@ -51,19 +55,27 @@ public class Reserve implements Serializable {
 	}
 	
 	/* all functions for reference*/
+	@JsonIgnore
 	public BookCopy getReservedCopy() {
+		if (ReservedCopy == null)
+			ReservedCopy = EntityManager.getBookCopyByPK(ReservedCopyPK);
 		return ReservedCopy;
 	}	
 	
 	public void setReservedCopy(BookCopy bookcopy) {
 		this.ReservedCopy = bookcopy;
+		this.ReservedCopyPK = bookcopy.getPK();
 	}			
+	@JsonIgnore
 	public User getReservedUser() {
+		if (ReservedUser == null)
+			ReservedUser = EntityManager.getUserByPK(ReservedUserPK);
 		return ReservedUser;
 	}	
 	
 	public void setReservedUser(User user) {
 		this.ReservedUser = user;
+		this.ReservedUserPK = user.getPK();
 	}			
 	
 

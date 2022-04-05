@@ -23,6 +23,8 @@ public class RecommendBook extends Book  implements Serializable {
 	private LocalDate recommendDate;
 	
 	/* all references */
+	@JsonProperty
+	private Object RecommendUserPK;
 	private User RecommendUser; 
 	
 	/* all get and set functions */
@@ -37,12 +39,16 @@ public class RecommendBook extends Book  implements Serializable {
 	}
 	
 	/* all functions for reference*/
+	@JsonIgnore
 	public User getRecommendUser() {
+		if (RecommendUser == null)
+			RecommendUser = EntityManager.getUserByPK(RecommendUserPK);
 		return RecommendUser;
 	}	
 	
 	public void setRecommendUser(User user) {
 		this.RecommendUser = user;
+		this.RecommendUserPK = user.getPK();
 	}			
 	
 

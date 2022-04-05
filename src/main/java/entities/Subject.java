@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import org.hyperledger.fabric.contract.annotation.*;
+import com.owlike.genson.annotation.*;
+import java.util.stream.*;
 
 @DataType()
 public class Subject implements Serializable {
@@ -21,7 +23,11 @@ public class Subject implements Serializable {
 	private String name;
 	
 	/* all references */
+	@JsonProperty
+	private Object SuperSubjectPK;
 	private Subject SuperSubject; 
+	@JsonProperty
+	private List<Object> SubSubjectPKs = new LinkedList<>();
 	private List<Subject> SubSubject = new LinkedList<Subject>(); 
 	
 	/* all get and set functions */
@@ -34,22 +40,33 @@ public class Subject implements Serializable {
 	}
 	
 	/* all functions for reference*/
+	@JsonIgnore
 	public Subject getSuperSubject() {
+		if (SuperSubject == null)
+			SuperSubject = EntityManager.getSubjectByPK(SuperSubjectPK);
 		return SuperSubject;
 	}	
 	
 	public void setSuperSubject(Subject subject) {
 		this.SuperSubject = subject;
+		this.SuperSubjectPK = subject.getPK();
 	}			
+	@JsonIgnore
 	public List<Subject> getSubSubject() {
+		if (SubSubject == null)
+			SubSubject = SubSubjectPKs.stream().map(EntityManager::getSubjectByPK).collect(Collectors.toList());
 		return SubSubject;
 	}	
 	
 	public void addSubSubject(Subject subject) {
+		getSubSubject();
+		this.SubSubjectPKs.add(subject.getPK());
 		this.SubSubject.add(subject);
 	}
 	
 	public void deleteSubSubject(Subject subject) {
+		getSubSubject();
+		this.SubSubjectPKs.remove(subject.getPK());
 		this.SubSubject.remove(subject);
 	}
 	

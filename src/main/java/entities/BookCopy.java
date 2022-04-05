@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import org.hyperledger.fabric.contract.annotation.*;
+import com.owlike.genson.annotation.*;
+import java.util.stream.*;
 
 @DataType()
 public class BookCopy implements Serializable {
@@ -27,8 +29,14 @@ public class BookCopy implements Serializable {
 	private boolean isReserved;
 	
 	/* all references */
+	@JsonProperty
+	private Object BookBelongsPK;
 	private Book BookBelongs; 
+	@JsonProperty
+	private List<Object> LoanedRecordPKs = new LinkedList<>();
 	private List<Loan> LoanedRecord = new LinkedList<Loan>(); 
+	@JsonProperty
+	private List<Object> ReservationRecordPKs = new LinkedList<>();
 	private List<Reserve> ReservationRecord = new LinkedList<Reserve>(); 
 	
 	/* all get and set functions */
@@ -62,33 +70,51 @@ public class BookCopy implements Serializable {
 	}
 	
 	/* all functions for reference*/
+	@JsonIgnore
 	public Book getBookBelongs() {
+		if (BookBelongs == null)
+			BookBelongs = EntityManager.getBookByPK(BookBelongsPK);
 		return BookBelongs;
 	}	
 	
 	public void setBookBelongs(Book book) {
 		this.BookBelongs = book;
+		this.BookBelongsPK = book.getPK();
 	}			
+	@JsonIgnore
 	public List<Loan> getLoanedRecord() {
+		if (LoanedRecord == null)
+			LoanedRecord = LoanedRecordPKs.stream().map(EntityManager::getLoanByPK).collect(Collectors.toList());
 		return LoanedRecord;
 	}	
 	
 	public void addLoanedRecord(Loan loan) {
+		getLoanedRecord();
+		this.LoanedRecordPKs.add(loan.getPK());
 		this.LoanedRecord.add(loan);
 	}
 	
 	public void deleteLoanedRecord(Loan loan) {
+		getLoanedRecord();
+		this.LoanedRecordPKs.remove(loan.getPK());
 		this.LoanedRecord.remove(loan);
 	}
+	@JsonIgnore
 	public List<Reserve> getReservationRecord() {
+		if (ReservationRecord == null)
+			ReservationRecord = ReservationRecordPKs.stream().map(EntityManager::getReserveByPK).collect(Collectors.toList());
 		return ReservationRecord;
 	}	
 	
 	public void addReservationRecord(Reserve reserve) {
+		getReservationRecord();
+		this.ReservationRecordPKs.add(reserve.getPK());
 		this.ReservationRecord.add(reserve);
 	}
 	
 	public void deleteReservationRecord(Reserve reserve) {
+		getReservationRecord();
+		this.ReservationRecordPKs.remove(reserve.getPK());
 		this.ReservationRecord.remove(reserve);
 	}
 	

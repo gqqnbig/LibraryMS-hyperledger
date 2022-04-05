@@ -47,9 +47,17 @@ public class Loan implements Serializable {
 	private boolean overDue31Days;
 	
 	/* all references */
+	@JsonProperty
+	private Object LoanedUserPK;
 	private User LoanedUser; 
+	@JsonProperty
+	private Object LoanedCopyPK;
 	private BookCopy LoanedCopy; 
+	@JsonProperty
+	private Object LoanLibrarianPK;
 	private Librarian LoanLibrarian; 
+	@JsonProperty
+	private Object ReturnLibrarianPK;
 	private Librarian ReturnLibrarian; 
 	
 	/* all get and set functions */
@@ -140,33 +148,49 @@ public class Loan implements Serializable {
 	}
 	
 	/* all functions for reference*/
+	@JsonIgnore
 	public User getLoanedUser() {
+		if (LoanedUser == null)
+			LoanedUser = EntityManager.getUserByPK(LoanedUserPK);
 		return LoanedUser;
 	}	
 	
 	public void setLoanedUser(User user) {
 		this.LoanedUser = user;
+		this.LoanedUserPK = user.getPK();
 	}			
+	@JsonIgnore
 	public BookCopy getLoanedCopy() {
+		if (LoanedCopy == null)
+			LoanedCopy = EntityManager.getBookCopyByPK(LoanedCopyPK);
 		return LoanedCopy;
 	}	
 	
 	public void setLoanedCopy(BookCopy bookcopy) {
 		this.LoanedCopy = bookcopy;
+		this.LoanedCopyPK = bookcopy.getPK();
 	}			
+	@JsonIgnore
 	public Librarian getLoanLibrarian() {
+		if (LoanLibrarian == null)
+			LoanLibrarian = EntityManager.getLibrarianByPK(LoanLibrarianPK);
 		return LoanLibrarian;
 	}	
 	
 	public void setLoanLibrarian(Librarian librarian) {
 		this.LoanLibrarian = librarian;
+		this.LoanLibrarianPK = librarian.getPK();
 	}			
+	@JsonIgnore
 	public Librarian getReturnLibrarian() {
+		if (ReturnLibrarian == null)
+			ReturnLibrarian = EntityManager.getLibrarianByPK(ReturnLibrarianPK);
 		return ReturnLibrarian;
 	}	
 	
 	public void setReturnLibrarian(Librarian librarian) {
 		this.ReturnLibrarian = librarian;
+		this.ReturnLibrarianPK = librarian.getPK();
 	}			
 	
 

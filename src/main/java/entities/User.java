@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import org.hyperledger.fabric.contract.annotation.*;
+import com.owlike.genson.annotation.*;
+import java.util.stream.*;
 
 @DataType()
 public class User implements Serializable {
@@ -39,8 +41,14 @@ public class User implements Serializable {
 	private float overDueFee;
 	
 	/* all references */
+	@JsonProperty
+	private List<Object> LoanedBookPKs = new LinkedList<>();
 	private List<Loan> LoanedBook = new LinkedList<Loan>(); 
+	@JsonProperty
+	private List<Object> ReservedBookPKs = new LinkedList<>();
 	private List<Reserve> ReservedBook = new LinkedList<Reserve>(); 
+	@JsonProperty
+	private List<Object> RecommendedBookPKs = new LinkedList<>();
 	private List<RecommendBook> RecommendedBook = new LinkedList<RecommendBook>(); 
 	
 	/* all get and set functions */
@@ -116,37 +124,58 @@ public class User implements Serializable {
 	}
 	
 	/* all functions for reference*/
+	@JsonIgnore
 	public List<Loan> getLoanedBook() {
+		if (LoanedBook == null)
+			LoanedBook = LoanedBookPKs.stream().map(EntityManager::getLoanByPK).collect(Collectors.toList());
 		return LoanedBook;
 	}	
 	
 	public void addLoanedBook(Loan loan) {
+		getLoanedBook();
+		this.LoanedBookPKs.add(loan.getPK());
 		this.LoanedBook.add(loan);
 	}
 	
 	public void deleteLoanedBook(Loan loan) {
+		getLoanedBook();
+		this.LoanedBookPKs.remove(loan.getPK());
 		this.LoanedBook.remove(loan);
 	}
+	@JsonIgnore
 	public List<Reserve> getReservedBook() {
+		if (ReservedBook == null)
+			ReservedBook = ReservedBookPKs.stream().map(EntityManager::getReserveByPK).collect(Collectors.toList());
 		return ReservedBook;
 	}	
 	
 	public void addReservedBook(Reserve reserve) {
+		getReservedBook();
+		this.ReservedBookPKs.add(reserve.getPK());
 		this.ReservedBook.add(reserve);
 	}
 	
 	public void deleteReservedBook(Reserve reserve) {
+		getReservedBook();
+		this.ReservedBookPKs.remove(reserve.getPK());
 		this.ReservedBook.remove(reserve);
 	}
+	@JsonIgnore
 	public List<RecommendBook> getRecommendedBook() {
+		if (RecommendedBook == null)
+			RecommendedBook = RecommendedBookPKs.stream().map(EntityManager::getRecommendBookByPK).collect(Collectors.toList());
 		return RecommendedBook;
 	}	
 	
 	public void addRecommendedBook(RecommendBook recommendbook) {
+		getRecommendedBook();
+		this.RecommendedBookPKs.add(recommendbook.getPK());
 		this.RecommendedBook.add(recommendbook);
 	}
 	
 	public void deleteRecommendedBook(RecommendBook recommendbook) {
+		getRecommendedBook();
+		this.RecommendedBookPKs.remove(recommendbook.getPK());
 		this.RecommendedBook.remove(recommendbook);
 	}
 	

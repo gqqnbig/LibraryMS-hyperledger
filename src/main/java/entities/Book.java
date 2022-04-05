@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import org.hyperledger.fabric.contract.annotation.*;
+import com.owlike.genson.annotation.*;
+import java.util.stream.*;
 
 @DataType()
 public class Book implements Serializable {
@@ -35,7 +37,11 @@ public class Book implements Serializable {
 	private int copyNum;
 	
 	/* all references */
+	@JsonProperty
+	private List<Object> CopysPKs = new LinkedList<>();
 	private List<BookCopy> Copys = new LinkedList<BookCopy>(); 
+	@JsonProperty
+	private List<Object> SubjectPKs = new LinkedList<>();
 	private List<Subject> Subject = new LinkedList<Subject>(); 
 	
 	/* all get and set functions */
@@ -97,26 +103,40 @@ public class Book implements Serializable {
 	}
 	
 	/* all functions for reference*/
+	@JsonIgnore
 	public List<BookCopy> getCopys() {
+		if (Copys == null)
+			Copys = CopysPKs.stream().map(EntityManager::getBookCopyByPK).collect(Collectors.toList());
 		return Copys;
 	}	
 	
 	public void addCopys(BookCopy bookcopy) {
+		getCopys();
+		this.CopysPKs.add(bookcopy.getPK());
 		this.Copys.add(bookcopy);
 	}
 	
 	public void deleteCopys(BookCopy bookcopy) {
+		getCopys();
+		this.CopysPKs.remove(bookcopy.getPK());
 		this.Copys.remove(bookcopy);
 	}
+	@JsonIgnore
 	public List<Subject> getSubject() {
+		if (Subject == null)
+			Subject = SubjectPKs.stream().map(EntityManager::getSubjectByPK).collect(Collectors.toList());
 		return Subject;
 	}	
 	
 	public void addSubject(Subject subject) {
+		getSubject();
+		this.SubjectPKs.add(subject.getPK());
 		this.Subject.add(subject);
 	}
 	
 	public void deleteSubject(Subject subject) {
+		getSubject();
+		this.SubjectPKs.remove(subject.getPK());
 		this.Subject.remove(subject);
 	}
 	
