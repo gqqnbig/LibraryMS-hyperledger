@@ -606,5 +606,38 @@ public class EntityManager {
 			throw new RuntimeException();
 		}
 	}
+
+	public static ChaincodeStub getStub() {
+		return stub;
+	}
+
+	public static void setStub(ChaincodeStub stub) {
+		EntityManager.stub = stub;
+		random = null;
+
+		AdministratorInstances = new LinkedList<>();
+		BookCopyInstances = new LinkedList<>();
+		BookInstances = new LinkedList<>();
+		FacultyInstances = new LinkedList<>();
+		LibrarianInstances = new LinkedList<>();
+		LoanInstances = new LinkedList<>();
+		RecommendBookInstances = new LinkedList<>();
+		ReserveInstances = new LinkedList<>();
+		StudentInstances = new LinkedList<>();
+		SubjectInstances = new LinkedList<>();
+		UserInstances = new LinkedList<>();
+
+		AllInstance.put("Administrator", AdministratorInstances);
+		AllInstance.put("BookCopy", BookCopyInstances);
+		AllInstance.put("Book", BookInstances);
+		AllInstance.put("Faculty", FacultyInstances);
+		AllInstance.put("Librarian", LibrarianInstances);
+		AllInstance.put("Loan", LoanInstances);
+		AllInstance.put("RecommendBook", RecommendBookInstances);
+		AllInstance.put("Reserve", ReserveInstances);
+		AllInstance.put("Student", StudentInstances);
+		AllInstance.put("Subject", SubjectInstances);
+		AllInstance.put("User", UserInstances);
+	}
 }
 
