@@ -48,12 +48,12 @@ public class SearchBookImpl implements SearchBook, Serializable, ContractInterfa
 	/* Generate buiness logic according to functional requirement */
 	
 	@Transaction(intent = Transaction.TYPE.SUBMIT)
-	public List<Book> searchBookByBarCode(final Context ctx, String barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public Book[] searchBookByBarCode(final Context ctx, String barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
 		EntityManager.setStub(stub);
 
 		var res = searchBookByBarCode(barcode);
-		return res;
+		return res.toArray(Book[]::new);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -99,12 +99,12 @@ public class SearchBookImpl implements SearchBook, Serializable, ContractInterfa
 	
 	
 	@Transaction(intent = Transaction.TYPE.SUBMIT)
-	public List<Book> searchBookByTitle(final Context ctx, String title) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public Book[] searchBookByTitle(final Context ctx, String title) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
 		EntityManager.setStub(stub);
 
 		var res = searchBookByTitle(title);
-		return res;
+		return res.toArray(Book[]::new);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -146,12 +146,12 @@ public class SearchBookImpl implements SearchBook, Serializable, ContractInterfa
 	
 	
 	@Transaction(intent = Transaction.TYPE.SUBMIT)
-	public List<Book> searchBookByAuthor(final Context ctx, String authorname) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public Book[] searchBookByAuthor(final Context ctx, String authorname) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
 		EntityManager.setStub(stub);
 
 		var res = searchBookByAuthor(authorname);
-		return res;
+		return res.toArray(Book[]::new);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -193,12 +193,12 @@ public class SearchBookImpl implements SearchBook, Serializable, ContractInterfa
 	
 	
 	@Transaction(intent = Transaction.TYPE.SUBMIT)
-	public List<Book> searchBookByISBN(final Context ctx, String iSBNnumber) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public Book[] searchBookByISBN(final Context ctx, String iSBNnumber) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
 		EntityManager.setStub(stub);
 
 		var res = searchBookByISBN(iSBNnumber);
-		return res;
+		return res.toArray(Book[]::new);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -240,12 +240,12 @@ public class SearchBookImpl implements SearchBook, Serializable, ContractInterfa
 	
 	
 	@Transaction(intent = Transaction.TYPE.SUBMIT)
-	public List<Book> searchBookBySubject(final Context ctx, String subject) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public Book[] searchBookBySubject(final Context ctx, String subject) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
 		EntityManager.setStub(stub);
 
 		var res = searchBookBySubject(subject);
-		return res;
+		return res.toArray(Book[]::new);
 	}
 
 	@SuppressWarnings("unchecked")

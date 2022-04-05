@@ -48,12 +48,12 @@ public class ListBookHistoryImpl implements ListBookHistory, Serializable, Contr
 	/* Generate buiness logic according to functional requirement */
 	
 	@Transaction(intent = Transaction.TYPE.SUBMIT)
-	public List<Loan> listBorrowHistory(final Context ctx, String uid) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public Loan[] listBorrowHistory(final Context ctx, String uid) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
 		EntityManager.setStub(stub);
 
 		var res = listBorrowHistory(uid);
-		return res;
+		return res.toArray(Loan[]::new);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -103,12 +103,12 @@ public class ListBookHistoryImpl implements ListBookHistory, Serializable, Contr
 	
 	
 	@Transaction(intent = Transaction.TYPE.SUBMIT)
-	public List<Loan> listHodingBook(final Context ctx, String uid) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public Loan[] listHodingBook(final Context ctx, String uid) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
 		EntityManager.setStub(stub);
 
 		var res = listHodingBook(uid);
-		return res;
+		return res.toArray(Loan[]::new);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -167,12 +167,12 @@ public class ListBookHistoryImpl implements ListBookHistory, Serializable, Contr
 	
 	
 	@Transaction(intent = Transaction.TYPE.SUBMIT)
-	public List<BookCopy> listOverDueBook(final Context ctx, String uid) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public BookCopy[] listOverDueBook(final Context ctx, String uid) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
 		EntityManager.setStub(stub);
 
 		var res = listOverDueBook(uid);
-		return res;
+		return res.toArray(BookCopy[]::new);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -237,12 +237,12 @@ public class ListBookHistoryImpl implements ListBookHistory, Serializable, Contr
 	
 	
 	@Transaction(intent = Transaction.TYPE.SUBMIT)
-	public List<BookCopy> listReservationBook(final Context ctx, String uid) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public BookCopy[] listReservationBook(final Context ctx, String uid) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
 		EntityManager.setStub(stub);
 
 		var res = listReservationBook(uid);
-		return res;
+		return res.toArray(BookCopy[]::new);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -298,12 +298,12 @@ public class ListBookHistoryImpl implements ListBookHistory, Serializable, Contr
 	
 	
 	@Transaction(intent = Transaction.TYPE.SUBMIT)
-	public List<RecommendBook> listRecommendBook(final Context ctx, String uid) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+	public RecommendBook[] listRecommendBook(final Context ctx, String uid) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		ChaincodeStub stub = ctx.getStub();
 		EntityManager.setStub(stub);
 
 		var res = listRecommendBook(uid);
-		return res;
+		return res.toArray(RecommendBook[]::new);
 	}
 
 	@SuppressWarnings("unchecked")
