@@ -14,8 +14,12 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 import org.apache.commons.lang3.SerializationUtils;
 import java.util.Iterator;
+import org.hyperledger.fabric.shim.*;
+import org.hyperledger.fabric.contract.annotation.*;
+import org.hyperledger.fabric.contract.*;
 
-public class SearchBookImpl implements SearchBook, Serializable {
+@Contract
+public class SearchBookImpl implements SearchBook, Serializable, ContractInterface {
 	
 	
 	public static Map<String, List<String>> opINVRelatedEntity = new HashMap<String, List<String>>();
@@ -38,10 +42,20 @@ public class SearchBookImpl implements SearchBook, Serializable {
 	
 	/* Generate inject for sharing temp variables between use cases in system service */
 	public void refresh() {
-		LibraryManagementSystemSystem librarymanagementsystemsystem_service = (LibraryManagementSystemSystem) ServiceManager.getAllInstancesOf("LibraryManagementSystemSystem").get(0);
+		LibraryManagementSystemSystem librarymanagementsystemsystem_service = (LibraryManagementSystemSystem) ServiceManager.getAllInstancesOf(LibraryManagementSystemSystem.class).get(0);
 	}
 	
 	/* Generate buiness logic according to functional requirement */
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public List<Book> searchBookByBarCode(final Context ctx, String barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = searchBookByBarCode(barcode);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<Book> searchBookByBarCode(String barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -54,7 +68,7 @@ public class SearchBookImpl implements SearchBook, Serializable {
 			/* Logic here */
 			List<Book> tempsbook = new LinkedList<>();
 			//has nested iterator	
-			for (Book book : ((List<Book>)EntityManager.getAllInstancesOf("Book")))
+			for (Book book : ((List<Book>)EntityManager.getAllInstancesOf(Book.class)))
 			{
 				//nested for here:
 				for (BookCopy c : book.getCopys()) //generated in pre generator
@@ -83,6 +97,16 @@ public class SearchBookImpl implements SearchBook, Serializable {
 	} 
 	 
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public List<Book> searchBookByTitle(final Context ctx, String title) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = searchBookByTitle(title);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<Book> searchBookByTitle(String title) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -95,7 +119,7 @@ public class SearchBookImpl implements SearchBook, Serializable {
 			/* Logic here */
 			List<Book> tempsbook = new LinkedList<>();
 			//no nested iterator --  iterator: select
-			for (Book book : ((List<Book>)EntityManager.getAllInstancesOf("Book")))
+			for (Book book : ((List<Book>)EntityManager.getAllInstancesOf(Book.class)))
 			{
 				if (book.getTitle().equals(title))
 				{
@@ -120,6 +144,16 @@ public class SearchBookImpl implements SearchBook, Serializable {
 	} 
 	 
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public List<Book> searchBookByAuthor(final Context ctx, String authorname) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = searchBookByAuthor(authorname);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<Book> searchBookByAuthor(String authorname) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -132,7 +166,7 @@ public class SearchBookImpl implements SearchBook, Serializable {
 			/* Logic here */
 			List<Book> tempsbook = new LinkedList<>();
 			//no nested iterator --  iterator: select
-			for (Book book : ((List<Book>)EntityManager.getAllInstancesOf("Book")))
+			for (Book book : ((List<Book>)EntityManager.getAllInstancesOf(Book.class)))
 			{
 				if (book.getAuthor().equals(authorname))
 				{
@@ -157,6 +191,16 @@ public class SearchBookImpl implements SearchBook, Serializable {
 	} 
 	 
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public List<Book> searchBookByISBN(final Context ctx, String iSBNnumber) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = searchBookByISBN(iSBNnumber);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<Book> searchBookByISBN(String iSBNnumber) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -169,7 +213,7 @@ public class SearchBookImpl implements SearchBook, Serializable {
 			/* Logic here */
 			List<Book> tempsbook = new LinkedList<>();
 			//no nested iterator --  iterator: select
-			for (Book book : ((List<Book>)EntityManager.getAllInstancesOf("Book")))
+			for (Book book : ((List<Book>)EntityManager.getAllInstancesOf(Book.class)))
 			{
 				if (book.getISBn().equals(iSBNnumber))
 				{
@@ -194,6 +238,16 @@ public class SearchBookImpl implements SearchBook, Serializable {
 	} 
 	 
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public List<Book> searchBookBySubject(final Context ctx, String subject) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = searchBookBySubject(subject);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<Book> searchBookBySubject(String subject) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -206,7 +260,7 @@ public class SearchBookImpl implements SearchBook, Serializable {
 			/* Logic here */
 			List<Book> tempsbook = new LinkedList<>();
 			//has nested iterator	
-			for (Book book : ((List<Book>)EntityManager.getAllInstancesOf("Book")))
+			for (Book book : ((List<Book>)EntityManager.getAllInstancesOf(Book.class)))
 			{
 				//nested for here:
 				for (Subject s : book.getSubject()) //generated in pre generator

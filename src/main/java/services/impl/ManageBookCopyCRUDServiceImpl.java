@@ -14,8 +14,12 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 import org.apache.commons.lang3.SerializationUtils;
 import java.util.Iterator;
+import org.hyperledger.fabric.shim.*;
+import org.hyperledger.fabric.contract.annotation.*;
+import org.hyperledger.fabric.contract.*;
 
-public class ManageBookCopyCRUDServiceImpl implements ManageBookCopyCRUDService, Serializable {
+@Contract
+public class ManageBookCopyCRUDServiceImpl implements ManageBookCopyCRUDService, Serializable, ContractInterface {
 	
 	
 	public static Map<String, List<String>> opINVRelatedEntity = new HashMap<String, List<String>>();
@@ -38,10 +42,20 @@ public class ManageBookCopyCRUDServiceImpl implements ManageBookCopyCRUDService,
 	
 	/* Generate inject for sharing temp variables between use cases in system service */
 	public void refresh() {
-		LibraryManagementSystemSystem librarymanagementsystemsystem_service = (LibraryManagementSystemSystem) ServiceManager.getAllInstancesOf("LibraryManagementSystemSystem").get(0);
+		LibraryManagementSystemSystem librarymanagementsystemsystem_service = (LibraryManagementSystemSystem) ServiceManager.getAllInstancesOf(LibraryManagementSystemSystem.class).get(0);
 	}
 	
 	/* Generate buiness logic according to functional requirement */
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public boolean addBookCopy(final Context ctx, String callNo, String barcode, String location) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = addBookCopy(callNo, barcode, location);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean addBookCopy(String callNo, String barcode, String location) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -50,7 +64,7 @@ public class ManageBookCopyCRUDServiceImpl implements ManageBookCopyCRUDService,
 		//Get book
 		Book book = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Book b : (List<Book>)EntityManager.getAllInstancesOf("Book"))
+		for (Book b : (List<Book>)EntityManager.getAllInstancesOf(Book.class))
 		{
 			if (b.getCallNo().equals(callNo))
 			{
@@ -112,7 +126,7 @@ public class ManageBookCopyCRUDServiceImpl implements ManageBookCopyCRUDService,
 			 && 
 			book.getCopyNum() == Pre_book.getCopyNum()+1
 			 && 
-			StandardOPs.includes(((List<BookCopy>)EntityManager.getAllInstancesOf("BookCopy")), copy)
+			StandardOPs.includes(((List<BookCopy>)EntityManager.getAllInstancesOf(BookCopy.class)), copy)
 			 && 
 			true)) {
 				throw new PostconditionException();
@@ -134,6 +148,16 @@ public class ManageBookCopyCRUDServiceImpl implements ManageBookCopyCRUDService,
 	 
 	static {opINVRelatedEntity.put("addBookCopy", Arrays.asList("Book","BookCopy"));}
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public BookCopy queryBookCopy(final Context ctx, String barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = queryBookCopy(barcode);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public BookCopy queryBookCopy(String barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -142,7 +166,7 @@ public class ManageBookCopyCRUDServiceImpl implements ManageBookCopyCRUDService,
 		//Get bookcopy
 		BookCopy bookcopy = null;
 		//no nested iterator --  iterator: any previous:any
-		for (BookCopy boo : (List<BookCopy>)EntityManager.getAllInstancesOf("BookCopy"))
+		for (BookCopy boo : (List<BookCopy>)EntityManager.getAllInstancesOf(BookCopy.class))
 		{
 			if (boo.getBarcode().equals(barcode))
 			{
@@ -176,6 +200,16 @@ public class ManageBookCopyCRUDServiceImpl implements ManageBookCopyCRUDService,
 	} 
 	 
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public boolean modifyBookCopy(final Context ctx, String barcode, String status, String location, boolean isreserved) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = modifyBookCopy(barcode, genson.deserialize(status, CopyStatus.class), location, isreserved);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean modifyBookCopy(String barcode, CopyStatus status, String location, boolean isreserved) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -184,7 +218,7 @@ public class ManageBookCopyCRUDServiceImpl implements ManageBookCopyCRUDService,
 		//Get bookcopy
 		BookCopy bookcopy = null;
 		//no nested iterator --  iterator: any previous:any
-		for (BookCopy boo : (List<BookCopy>)EntityManager.getAllInstancesOf("BookCopy"))
+		for (BookCopy boo : (List<BookCopy>)EntityManager.getAllInstancesOf(BookCopy.class))
 		{
 			if (boo.getBarcode().equals(barcode))
 			{
@@ -236,6 +270,16 @@ public class ManageBookCopyCRUDServiceImpl implements ManageBookCopyCRUDService,
 	 
 	static {opINVRelatedEntity.put("modifyBookCopy", Arrays.asList("BookCopy"));}
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public boolean deleteBookCopy(final Context ctx, String barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = deleteBookCopy(barcode);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean deleteBookCopy(String barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -244,7 +288,7 @@ public class ManageBookCopyCRUDServiceImpl implements ManageBookCopyCRUDService,
 		//Get bookcopy
 		BookCopy bookcopy = null;
 		//no nested iterator --  iterator: any previous:any
-		for (BookCopy boo : (List<BookCopy>)EntityManager.getAllInstancesOf("BookCopy"))
+		for (BookCopy boo : (List<BookCopy>)EntityManager.getAllInstancesOf(BookCopy.class))
 		{
 			if (boo.getBarcode().equals(barcode))
 			{
@@ -257,7 +301,7 @@ public class ManageBookCopyCRUDServiceImpl implements ManageBookCopyCRUDService,
 		/* previous state in post-condition*/
 
 		/* check precondition */
-		if (StandardOPs.oclIsundefined(bookcopy) == false && StandardOPs.includes(((List<BookCopy>)EntityManager.getAllInstancesOf("BookCopy")), bookcopy)) 
+		if (StandardOPs.oclIsundefined(bookcopy) == false && StandardOPs.includes(((List<BookCopy>)EntityManager.getAllInstancesOf(BookCopy.class)), bookcopy)) 
 		{ 
 			/* Logic here */
 			EntityManager.deleteObject("BookCopy", bookcopy);
@@ -265,7 +309,7 @@ public class ManageBookCopyCRUDServiceImpl implements ManageBookCopyCRUDService,
 			
 			refresh();
 			// post-condition checking
-			if (!(StandardOPs.excludes(((List<BookCopy>)EntityManager.getAllInstancesOf("BookCopy")), bookcopy)
+			if (!(StandardOPs.excludes(((List<BookCopy>)EntityManager.getAllInstancesOf(BookCopy.class)), bookcopy)
 			 && 
 			true)) {
 				throw new PostconditionException();

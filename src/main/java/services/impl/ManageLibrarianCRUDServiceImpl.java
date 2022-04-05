@@ -14,8 +14,12 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 import org.apache.commons.lang3.SerializationUtils;
 import java.util.Iterator;
+import org.hyperledger.fabric.shim.*;
+import org.hyperledger.fabric.contract.annotation.*;
+import org.hyperledger.fabric.contract.*;
 
-public class ManageLibrarianCRUDServiceImpl implements ManageLibrarianCRUDService, Serializable {
+@Contract
+public class ManageLibrarianCRUDServiceImpl implements ManageLibrarianCRUDService, Serializable, ContractInterface {
 	
 	
 	public static Map<String, List<String>> opINVRelatedEntity = new HashMap<String, List<String>>();
@@ -38,10 +42,20 @@ public class ManageLibrarianCRUDServiceImpl implements ManageLibrarianCRUDServic
 	
 	/* Generate inject for sharing temp variables between use cases in system service */
 	public void refresh() {
-		LibraryManagementSystemSystem librarymanagementsystemsystem_service = (LibraryManagementSystemSystem) ServiceManager.getAllInstancesOf("LibraryManagementSystemSystem").get(0);
+		LibraryManagementSystemSystem librarymanagementsystemsystem_service = (LibraryManagementSystemSystem) ServiceManager.getAllInstancesOf(LibraryManagementSystemSystem.class).get(0);
 	}
 	
 	/* Generate buiness logic according to functional requirement */
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public boolean createLibrarian(final Context ctx, String librarianid, String name, String password) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = createLibrarian(librarianid, name, password);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean createLibrarian(String librarianid, String name, String password) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -50,7 +64,7 @@ public class ManageLibrarianCRUDServiceImpl implements ManageLibrarianCRUDServic
 		//Get librarian
 		Librarian librarian = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Librarian lib : (List<Librarian>)EntityManager.getAllInstancesOf("Librarian"))
+		for (Librarian lib : (List<Librarian>)EntityManager.getAllInstancesOf(Librarian.class))
 		{
 			if (lib.getLibrarianID().equals(librarianid))
 			{
@@ -83,7 +97,7 @@ public class ManageLibrarianCRUDServiceImpl implements ManageLibrarianCRUDServic
 			 && 
 			lib.getPassword() == password
 			 && 
-			StandardOPs.includes(((List<Librarian>)EntityManager.getAllInstancesOf("Librarian")), lib)
+			StandardOPs.includes(((List<Librarian>)EntityManager.getAllInstancesOf(Librarian.class)), lib)
 			 && 
 			true)) {
 				throw new PostconditionException();
@@ -105,6 +119,16 @@ public class ManageLibrarianCRUDServiceImpl implements ManageLibrarianCRUDServic
 	 
 	static {opINVRelatedEntity.put("createLibrarian", Arrays.asList("Librarian"));}
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public Librarian queryLibrarian(final Context ctx, String librarianid) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = queryLibrarian(librarianid);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public Librarian queryLibrarian(String librarianid) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -113,7 +137,7 @@ public class ManageLibrarianCRUDServiceImpl implements ManageLibrarianCRUDServic
 		//Get librarian
 		Librarian librarian = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Librarian lib : (List<Librarian>)EntityManager.getAllInstancesOf("Librarian"))
+		for (Librarian lib : (List<Librarian>)EntityManager.getAllInstancesOf(Librarian.class))
 		{
 			if (lib.getLibrarianID().equals(librarianid))
 			{
@@ -147,6 +171,16 @@ public class ManageLibrarianCRUDServiceImpl implements ManageLibrarianCRUDServic
 	} 
 	 
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public boolean modifyLibrarian(final Context ctx, String librarianid, String name, String password) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = modifyLibrarian(librarianid, name, password);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean modifyLibrarian(String librarianid, String name, String password) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -155,7 +189,7 @@ public class ManageLibrarianCRUDServiceImpl implements ManageLibrarianCRUDServic
 		//Get librarian
 		Librarian librarian = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Librarian lib : (List<Librarian>)EntityManager.getAllInstancesOf("Librarian"))
+		for (Librarian lib : (List<Librarian>)EntityManager.getAllInstancesOf(Librarian.class))
 		{
 			if (lib.getLibrarianID().equals(librarianid))
 			{
@@ -204,6 +238,16 @@ public class ManageLibrarianCRUDServiceImpl implements ManageLibrarianCRUDServic
 	 
 	static {opINVRelatedEntity.put("modifyLibrarian", Arrays.asList("Librarian"));}
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public boolean deleteLibrarian(final Context ctx, String librarianid) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = deleteLibrarian(librarianid);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean deleteLibrarian(String librarianid) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -212,7 +256,7 @@ public class ManageLibrarianCRUDServiceImpl implements ManageLibrarianCRUDServic
 		//Get librarian
 		Librarian librarian = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Librarian lib : (List<Librarian>)EntityManager.getAllInstancesOf("Librarian"))
+		for (Librarian lib : (List<Librarian>)EntityManager.getAllInstancesOf(Librarian.class))
 		{
 			if (lib.getLibrarianID().equals(librarianid))
 			{
@@ -225,7 +269,7 @@ public class ManageLibrarianCRUDServiceImpl implements ManageLibrarianCRUDServic
 		/* previous state in post-condition*/
 
 		/* check precondition */
-		if (StandardOPs.oclIsundefined(librarian) == false && StandardOPs.includes(((List<Librarian>)EntityManager.getAllInstancesOf("Librarian")), librarian)) 
+		if (StandardOPs.oclIsundefined(librarian) == false && StandardOPs.includes(((List<Librarian>)EntityManager.getAllInstancesOf(Librarian.class)), librarian)) 
 		{ 
 			/* Logic here */
 			EntityManager.deleteObject("Librarian", librarian);
@@ -233,7 +277,7 @@ public class ManageLibrarianCRUDServiceImpl implements ManageLibrarianCRUDServic
 			
 			refresh();
 			// post-condition checking
-			if (!(StandardOPs.excludes(((List<Librarian>)EntityManager.getAllInstancesOf("Librarian")), librarian)
+			if (!(StandardOPs.excludes(((List<Librarian>)EntityManager.getAllInstancesOf(Librarian.class)), librarian)
 			 && 
 			true)) {
 				throw new PostconditionException();

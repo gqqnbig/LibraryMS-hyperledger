@@ -14,8 +14,12 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 import org.apache.commons.lang3.SerializationUtils;
 import java.util.Iterator;
+import org.hyperledger.fabric.shim.*;
+import org.hyperledger.fabric.contract.annotation.*;
+import org.hyperledger.fabric.contract.*;
 
-public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Serializable {
+@Contract
+public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Serializable, ContractInterface {
 	
 	
 	public static Map<String, List<String>> opINVRelatedEntity = new HashMap<String, List<String>>();
@@ -38,10 +42,20 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 	
 	/* Generate inject for sharing temp variables between use cases in system service */
 	public void refresh() {
-		LibraryManagementSystemSystem librarymanagementsystemsystem_service = (LibraryManagementSystemSystem) ServiceManager.getAllInstancesOf("LibraryManagementSystemSystem").get(0);
+		LibraryManagementSystemSystem librarymanagementsystemsystem_service = (LibraryManagementSystemSystem) ServiceManager.getAllInstancesOf(LibraryManagementSystemSystem.class).get(0);
 	}
 	
 	/* Generate buiness logic according to functional requirement */
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public boolean createUser(final Context ctx, String userid, String name, String sex, String password, String email, String faculty, int loanednumber, String borrowstatus, int suspensiondays, float overduefee) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = createUser(userid, name, genson.deserialize(sex, Sex.class), password, email, faculty, loanednumber, genson.deserialize(borrowstatus, BorrowStatus.class), suspensiondays, overduefee);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean createUser(String userid, String name, Sex sex, String password, String email, String faculty, int loanednumber, BorrowStatus borrowstatus, int suspensiondays, float overduefee) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -50,7 +64,7 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 		//Get user
 		User user = null;
 		//no nested iterator --  iterator: any previous:any
-		for (User use : (List<User>)EntityManager.getAllInstancesOf("User"))
+		for (User use : (List<User>)EntityManager.getAllInstancesOf(User.class))
 		{
 			if (use.getUserID().equals(userid))
 			{
@@ -104,7 +118,7 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 			 && 
 			use.getOverDueFee() == overduefee
 			 && 
-			StandardOPs.includes(((List<User>)EntityManager.getAllInstancesOf("User")), use)
+			StandardOPs.includes(((List<User>)EntityManager.getAllInstancesOf(User.class)), use)
 			 && 
 			true)) {
 				throw new PostconditionException();
@@ -126,6 +140,16 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 	 
 	static {opINVRelatedEntity.put("createUser", Arrays.asList("User"));}
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public User queryUser(final Context ctx, String userid) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = queryUser(userid);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public User queryUser(String userid) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -134,7 +158,7 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 		//Get user
 		User user = null;
 		//no nested iterator --  iterator: any previous:any
-		for (User use : (List<User>)EntityManager.getAllInstancesOf("User"))
+		for (User use : (List<User>)EntityManager.getAllInstancesOf(User.class))
 		{
 			if (use.getUserID().equals(userid))
 			{
@@ -168,6 +192,16 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 	} 
 	 
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public boolean modifyUser(final Context ctx, String userid, String name, String sex, String password, String email, String faculty, int loanednumber, String borrowstatus, int suspensiondays, float overduefee) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = modifyUser(userid, name, genson.deserialize(sex, Sex.class), password, email, faculty, loanednumber, genson.deserialize(borrowstatus, BorrowStatus.class), suspensiondays, overduefee);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean modifyUser(String userid, String name, Sex sex, String password, String email, String faculty, int loanednumber, BorrowStatus borrowstatus, int suspensiondays, float overduefee) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -176,7 +210,7 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 		//Get user
 		User user = null;
 		//no nested iterator --  iterator: any previous:any
-		for (User use : (List<User>)EntityManager.getAllInstancesOf("User"))
+		for (User use : (List<User>)EntityManager.getAllInstancesOf(User.class))
 		{
 			if (use.getUserID().equals(userid))
 			{
@@ -246,6 +280,16 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 	 
 	static {opINVRelatedEntity.put("modifyUser", Arrays.asList("User"));}
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public boolean deleteUser(final Context ctx, String userid) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = deleteUser(userid);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean deleteUser(String userid) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -254,7 +298,7 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 		//Get user
 		User user = null;
 		//no nested iterator --  iterator: any previous:any
-		for (User use : (List<User>)EntityManager.getAllInstancesOf("User"))
+		for (User use : (List<User>)EntityManager.getAllInstancesOf(User.class))
 		{
 			if (use.getUserID().equals(userid))
 			{
@@ -267,7 +311,7 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 		/* previous state in post-condition*/
 
 		/* check precondition */
-		if (StandardOPs.oclIsundefined(user) == false && StandardOPs.includes(((List<User>)EntityManager.getAllInstancesOf("User")), user)) 
+		if (StandardOPs.oclIsundefined(user) == false && StandardOPs.includes(((List<User>)EntityManager.getAllInstancesOf(User.class)), user)) 
 		{ 
 			/* Logic here */
 			EntityManager.deleteObject("User", user);
@@ -275,7 +319,7 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 			
 			refresh();
 			// post-condition checking
-			if (!(StandardOPs.excludes(((List<User>)EntityManager.getAllInstancesOf("User")), user)
+			if (!(StandardOPs.excludes(((List<User>)EntityManager.getAllInstancesOf(User.class)), user)
 			 && 
 			true)) {
 				throw new PostconditionException();
@@ -297,6 +341,16 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 	 
 	static {opINVRelatedEntity.put("deleteUser", Arrays.asList("User"));}
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public boolean createStudent(final Context ctx, String userID, String name, String sex, String password, String email, String faculty, String major, String programme, String registrationStatus) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = createStudent(userID, name, genson.deserialize(sex, Sex.class), password, email, faculty, major, genson.deserialize(programme, Programme.class), genson.deserialize(registrationStatus, StudentStatus.class));
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean createStudent(String userID, String name, Sex sex, String password, String email, String faculty, String major, Programme programme, StudentStatus registrationStatus) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -305,7 +359,7 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 		//Get user
 		Student user = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Student u : (List<Student>)EntityManager.getAllInstancesOf("Student"))
+		for (Student u : (List<Student>)EntityManager.getAllInstancesOf(Student.class))
 		{
 			if (u.getUserID().equals(userID))
 			{
@@ -369,9 +423,9 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 			 && 
 			u.getRegistrationStatus() == registrationStatus
 			 && 
-			StandardOPs.includes(((List<User>)EntityManager.getAllInstancesOf("User")), u)
+			StandardOPs.includes(((List<User>)EntityManager.getAllInstancesOf(User.class)), u)
 			 && 
-			StandardOPs.includes(((List<Student>)EntityManager.getAllInstancesOf("Student")), u)
+			StandardOPs.includes(((List<Student>)EntityManager.getAllInstancesOf(Student.class)), u)
 			 && 
 			true)) {
 				throw new PostconditionException();
@@ -393,6 +447,16 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 	 
 	static {opINVRelatedEntity.put("createStudent", Arrays.asList("Student"));}
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public boolean createFaculty(final Context ctx, String userID, String name, String sex, String password, String email, String faculty, String position, String status) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = createFaculty(userID, name, genson.deserialize(sex, Sex.class), password, email, faculty, genson.deserialize(position, FacultyPosition.class), genson.deserialize(status, FacultyStatus.class));
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean createFaculty(String userID, String name, Sex sex, String password, String email, String faculty, FacultyPosition position, FacultyStatus status) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -401,7 +465,7 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 		//Get user
 		Faculty user = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Faculty u : (List<Faculty>)EntityManager.getAllInstancesOf("Faculty"))
+		for (Faculty u : (List<Faculty>)EntityManager.getAllInstancesOf(Faculty.class))
 		{
 			if (u.getUserID().equals(userID))
 			{
@@ -462,9 +526,9 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 			 && 
 			u.getStatus() == status
 			 && 
-			StandardOPs.includes(((List<User>)EntityManager.getAllInstancesOf("User")), u)
+			StandardOPs.includes(((List<User>)EntityManager.getAllInstancesOf(User.class)), u)
 			 && 
-			StandardOPs.includes(((List<Faculty>)EntityManager.getAllInstancesOf("Faculty")), u)
+			StandardOPs.includes(((List<Faculty>)EntityManager.getAllInstancesOf(Faculty.class)), u)
 			 && 
 			true)) {
 				throw new PostconditionException();
@@ -486,6 +550,16 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 	 
 	static {opINVRelatedEntity.put("createFaculty", Arrays.asList("Faculty"));}
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public boolean modifyStudent(final Context ctx, String userID, String name, String sex, String password, String email, String faculty, String major, String programme, String registrationStatus) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = modifyStudent(userID, name, genson.deserialize(sex, Sex.class), password, email, faculty, major, genson.deserialize(programme, Programme.class), genson.deserialize(registrationStatus, StudentStatus.class));
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean modifyStudent(String userID, String name, Sex sex, String password, String email, String faculty, String major, Programme programme, StudentStatus registrationStatus) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -494,7 +568,7 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 		//Get user
 		Student user = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Student u : (List<Student>)EntityManager.getAllInstancesOf("Student"))
+		for (Student u : (List<Student>)EntityManager.getAllInstancesOf(Student.class))
 		{
 			if (u.getUserID().equals(userID))
 			{
@@ -573,6 +647,16 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 	 
 	static {opINVRelatedEntity.put("modifyStudent", Arrays.asList("Student"));}
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public boolean modifyFaculty(final Context ctx, String userID, String name, String sex, String password, String email, String faculty, String major, String position, String status) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = modifyFaculty(userID, name, genson.deserialize(sex, Sex.class), password, email, faculty, major, genson.deserialize(position, FacultyPosition.class), genson.deserialize(status, FacultyStatus.class));
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean modifyFaculty(String userID, String name, Sex sex, String password, String email, String faculty, String major, FacultyPosition position, FacultyStatus status) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -581,7 +665,7 @@ public class ManageUserCRUDServiceImpl implements ManageUserCRUDService, Seriali
 		//Get user
 		Faculty user = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Faculty u : (List<Faculty>)EntityManager.getAllInstancesOf("Faculty"))
+		for (Faculty u : (List<Faculty>)EntityManager.getAllInstancesOf(Faculty.class))
 		{
 			if (u.getUserID().equals(userID))
 			{

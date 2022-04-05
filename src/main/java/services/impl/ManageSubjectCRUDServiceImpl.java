@@ -14,8 +14,12 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 import org.apache.commons.lang3.SerializationUtils;
 import java.util.Iterator;
+import org.hyperledger.fabric.shim.*;
+import org.hyperledger.fabric.contract.annotation.*;
+import org.hyperledger.fabric.contract.*;
 
-public class ManageSubjectCRUDServiceImpl implements ManageSubjectCRUDService, Serializable {
+@Contract
+public class ManageSubjectCRUDServiceImpl implements ManageSubjectCRUDService, Serializable, ContractInterface {
 	
 	
 	public static Map<String, List<String>> opINVRelatedEntity = new HashMap<String, List<String>>();
@@ -38,10 +42,20 @@ public class ManageSubjectCRUDServiceImpl implements ManageSubjectCRUDService, S
 	
 	/* Generate inject for sharing temp variables between use cases in system service */
 	public void refresh() {
-		LibraryManagementSystemSystem librarymanagementsystemsystem_service = (LibraryManagementSystemSystem) ServiceManager.getAllInstancesOf("LibraryManagementSystemSystem").get(0);
+		LibraryManagementSystemSystem librarymanagementsystemsystem_service = (LibraryManagementSystemSystem) ServiceManager.getAllInstancesOf(LibraryManagementSystemSystem.class).get(0);
 	}
 	
 	/* Generate buiness logic according to functional requirement */
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public boolean createSubject(final Context ctx, String name) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = createSubject(name);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean createSubject(String name) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -50,7 +64,7 @@ public class ManageSubjectCRUDServiceImpl implements ManageSubjectCRUDService, S
 		//Get subject
 		Subject subject = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Subject sub : (List<Subject>)EntityManager.getAllInstancesOf("Subject"))
+		for (Subject sub : (List<Subject>)EntityManager.getAllInstancesOf(Subject.class))
 		{
 			if (sub.getName().equals(name))
 			{
@@ -77,7 +91,7 @@ public class ManageSubjectCRUDServiceImpl implements ManageSubjectCRUDService, S
 			if (!(true && 
 			sub.getName() == name
 			 && 
-			StandardOPs.includes(((List<Subject>)EntityManager.getAllInstancesOf("Subject")), sub)
+			StandardOPs.includes(((List<Subject>)EntityManager.getAllInstancesOf(Subject.class)), sub)
 			 && 
 			true)) {
 				throw new PostconditionException();
@@ -99,6 +113,16 @@ public class ManageSubjectCRUDServiceImpl implements ManageSubjectCRUDService, S
 	 
 	static {opINVRelatedEntity.put("createSubject", Arrays.asList("Subject"));}
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public Subject querySubject(final Context ctx, String name) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = querySubject(name);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public Subject querySubject(String name) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -107,7 +131,7 @@ public class ManageSubjectCRUDServiceImpl implements ManageSubjectCRUDService, S
 		//Get subject
 		Subject subject = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Subject sub : (List<Subject>)EntityManager.getAllInstancesOf("Subject"))
+		for (Subject sub : (List<Subject>)EntityManager.getAllInstancesOf(Subject.class))
 		{
 			if (sub.getName().equals(name))
 			{
@@ -141,6 +165,16 @@ public class ManageSubjectCRUDServiceImpl implements ManageSubjectCRUDService, S
 	} 
 	 
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public boolean modifySubject(final Context ctx, String name) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = modifySubject(name);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean modifySubject(String name) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -149,7 +183,7 @@ public class ManageSubjectCRUDServiceImpl implements ManageSubjectCRUDService, S
 		//Get subject
 		Subject subject = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Subject sub : (List<Subject>)EntityManager.getAllInstancesOf("Subject"))
+		for (Subject sub : (List<Subject>)EntityManager.getAllInstancesOf(Subject.class))
 		{
 			if (sub.getName().equals(name))
 			{
@@ -192,6 +226,16 @@ public class ManageSubjectCRUDServiceImpl implements ManageSubjectCRUDService, S
 	 
 	static {opINVRelatedEntity.put("modifySubject", Arrays.asList("Subject"));}
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public boolean deleteSubject(final Context ctx, String name) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = deleteSubject(name);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean deleteSubject(String name) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -200,7 +244,7 @@ public class ManageSubjectCRUDServiceImpl implements ManageSubjectCRUDService, S
 		//Get subject
 		Subject subject = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Subject sub : (List<Subject>)EntityManager.getAllInstancesOf("Subject"))
+		for (Subject sub : (List<Subject>)EntityManager.getAllInstancesOf(Subject.class))
 		{
 			if (sub.getName().equals(name))
 			{
@@ -213,7 +257,7 @@ public class ManageSubjectCRUDServiceImpl implements ManageSubjectCRUDService, S
 		/* previous state in post-condition*/
 
 		/* check precondition */
-		if (StandardOPs.oclIsundefined(subject) == false && StandardOPs.includes(((List<Subject>)EntityManager.getAllInstancesOf("Subject")), subject)) 
+		if (StandardOPs.oclIsundefined(subject) == false && StandardOPs.includes(((List<Subject>)EntityManager.getAllInstancesOf(Subject.class)), subject)) 
 		{ 
 			/* Logic here */
 			EntityManager.deleteObject("Subject", subject);
@@ -221,7 +265,7 @@ public class ManageSubjectCRUDServiceImpl implements ManageSubjectCRUDService, S
 			
 			refresh();
 			// post-condition checking
-			if (!(StandardOPs.excludes(((List<Subject>)EntityManager.getAllInstancesOf("Subject")), subject)
+			if (!(StandardOPs.excludes(((List<Subject>)EntityManager.getAllInstancesOf(Subject.class)), subject)
 			 && 
 			true)) {
 				throw new PostconditionException();

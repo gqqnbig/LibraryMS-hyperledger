@@ -14,8 +14,12 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 import org.apache.commons.lang3.SerializationUtils;
 import java.util.Iterator;
+import org.hyperledger.fabric.shim.*;
+import org.hyperledger.fabric.contract.annotation.*;
+import org.hyperledger.fabric.contract.*;
 
-public class ManageBookCRUDServiceImpl implements ManageBookCRUDService, Serializable {
+@Contract
+public class ManageBookCRUDServiceImpl implements ManageBookCRUDService, Serializable, ContractInterface {
 	
 	
 	public static Map<String, List<String>> opINVRelatedEntity = new HashMap<String, List<String>>();
@@ -38,10 +42,20 @@ public class ManageBookCRUDServiceImpl implements ManageBookCRUDService, Seriali
 	
 	/* Generate inject for sharing temp variables between use cases in system service */
 	public void refresh() {
-		LibraryManagementSystemSystem librarymanagementsystemsystem_service = (LibraryManagementSystemSystem) ServiceManager.getAllInstancesOf("LibraryManagementSystemSystem").get(0);
+		LibraryManagementSystemSystem librarymanagementsystemsystem_service = (LibraryManagementSystemSystem) ServiceManager.getAllInstancesOf(LibraryManagementSystemSystem.class).get(0);
 	}
 	
 	/* Generate buiness logic according to functional requirement */
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public boolean createBook(final Context ctx, String callno, String title, String edition, String author, String publisher, String description, String isbn, int copynum) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = createBook(callno, title, edition, author, publisher, description, isbn, copynum);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean createBook(String callno, String title, String edition, String author, String publisher, String description, String isbn, int copynum) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -50,7 +64,7 @@ public class ManageBookCRUDServiceImpl implements ManageBookCRUDService, Seriali
 		//Get book
 		Book book = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Book boo : (List<Book>)EntityManager.getAllInstancesOf("Book"))
+		for (Book boo : (List<Book>)EntityManager.getAllInstancesOf(Book.class))
 		{
 			if (boo.getCallNo().equals(callno))
 			{
@@ -98,7 +112,7 @@ public class ManageBookCRUDServiceImpl implements ManageBookCRUDService, Seriali
 			 && 
 			boo.getCopyNum() == copynum
 			 && 
-			StandardOPs.includes(((List<Book>)EntityManager.getAllInstancesOf("Book")), boo)
+			StandardOPs.includes(((List<Book>)EntityManager.getAllInstancesOf(Book.class)), boo)
 			 && 
 			true)) {
 				throw new PostconditionException();
@@ -120,6 +134,16 @@ public class ManageBookCRUDServiceImpl implements ManageBookCRUDService, Seriali
 	 
 	static {opINVRelatedEntity.put("createBook", Arrays.asList("Book"));}
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public Book queryBook(final Context ctx, String callno) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = queryBook(callno);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public Book queryBook(String callno) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -128,7 +152,7 @@ public class ManageBookCRUDServiceImpl implements ManageBookCRUDService, Seriali
 		//Get book
 		Book book = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Book boo : (List<Book>)EntityManager.getAllInstancesOf("Book"))
+		for (Book boo : (List<Book>)EntityManager.getAllInstancesOf(Book.class))
 		{
 			if (boo.getCallNo().equals(callno))
 			{
@@ -162,6 +186,16 @@ public class ManageBookCRUDServiceImpl implements ManageBookCRUDService, Seriali
 	} 
 	 
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public boolean modifyBook(final Context ctx, String callno, String title, String edition, String author, String publisher, String description, String isbn, int copynum) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = modifyBook(callno, title, edition, author, publisher, description, isbn, copynum);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean modifyBook(String callno, String title, String edition, String author, String publisher, String description, String isbn, int copynum) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -170,7 +204,7 @@ public class ManageBookCRUDServiceImpl implements ManageBookCRUDService, Seriali
 		//Get book
 		Book book = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Book boo : (List<Book>)EntityManager.getAllInstancesOf("Book"))
+		for (Book boo : (List<Book>)EntityManager.getAllInstancesOf(Book.class))
 		{
 			if (boo.getCallNo().equals(callno))
 			{
@@ -234,6 +268,16 @@ public class ManageBookCRUDServiceImpl implements ManageBookCRUDService, Seriali
 	 
 	static {opINVRelatedEntity.put("modifyBook", Arrays.asList("Book"));}
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public boolean deleteBook(final Context ctx, String callno) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = deleteBook(callno);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean deleteBook(String callno) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -242,7 +286,7 @@ public class ManageBookCRUDServiceImpl implements ManageBookCRUDService, Seriali
 		//Get book
 		Book book = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Book boo : (List<Book>)EntityManager.getAllInstancesOf("Book"))
+		for (Book boo : (List<Book>)EntityManager.getAllInstancesOf(Book.class))
 		{
 			if (boo.getCallNo().equals(callno))
 			{
@@ -255,7 +299,7 @@ public class ManageBookCRUDServiceImpl implements ManageBookCRUDService, Seriali
 		/* previous state in post-condition*/
 
 		/* check precondition */
-		if (StandardOPs.oclIsundefined(book) == false && StandardOPs.includes(((List<Book>)EntityManager.getAllInstancesOf("Book")), book)) 
+		if (StandardOPs.oclIsundefined(book) == false && StandardOPs.includes(((List<Book>)EntityManager.getAllInstancesOf(Book.class)), book)) 
 		{ 
 			/* Logic here */
 			EntityManager.deleteObject("Book", book);
@@ -263,7 +307,7 @@ public class ManageBookCRUDServiceImpl implements ManageBookCRUDService, Seriali
 			
 			refresh();
 			// post-condition checking
-			if (!(StandardOPs.excludes(((List<Book>)EntityManager.getAllInstancesOf("Book")), book)
+			if (!(StandardOPs.excludes(((List<Book>)EntityManager.getAllInstancesOf(Book.class)), book)
 			 && 
 			true)) {
 				throw new PostconditionException();

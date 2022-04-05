@@ -14,8 +14,12 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 import org.apache.commons.lang3.SerializationUtils;
 import java.util.Iterator;
+import org.hyperledger.fabric.shim.*;
+import org.hyperledger.fabric.contract.annotation.*;
+import org.hyperledger.fabric.contract.*;
 
-public class ListBookHistoryImpl implements ListBookHistory, Serializable {
+@Contract
+public class ListBookHistoryImpl implements ListBookHistory, Serializable, ContractInterface {
 	
 	
 	public static Map<String, List<String>> opINVRelatedEntity = new HashMap<String, List<String>>();
@@ -38,10 +42,20 @@ public class ListBookHistoryImpl implements ListBookHistory, Serializable {
 	
 	/* Generate inject for sharing temp variables between use cases in system service */
 	public void refresh() {
-		LibraryManagementSystemSystem librarymanagementsystemsystem_service = (LibraryManagementSystemSystem) ServiceManager.getAllInstancesOf("LibraryManagementSystemSystem").get(0);
+		LibraryManagementSystemSystem librarymanagementsystemsystem_service = (LibraryManagementSystemSystem) ServiceManager.getAllInstancesOf(LibraryManagementSystemSystem.class).get(0);
 	}
 	
 	/* Generate buiness logic according to functional requirement */
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public List<Loan> listBorrowHistory(final Context ctx, String uid) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = listBorrowHistory(uid);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<Loan> listBorrowHistory(String uid) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -50,7 +64,7 @@ public class ListBookHistoryImpl implements ListBookHistory, Serializable {
 		//Get user
 		User user = null;
 		//no nested iterator --  iterator: any previous:any
-		for (User u : (List<User>)EntityManager.getAllInstancesOf("User"))
+		for (User u : (List<User>)EntityManager.getAllInstancesOf(User.class))
 		{
 			if (u.getUserID().equals(uid))
 			{
@@ -87,6 +101,16 @@ public class ListBookHistoryImpl implements ListBookHistory, Serializable {
 	 
 	static {opINVRelatedEntity.put("listBorrowHistory", Arrays.asList("User"));}
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public List<Loan> listHodingBook(final Context ctx, String uid) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = listHodingBook(uid);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<Loan> listHodingBook(String uid) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -95,7 +119,7 @@ public class ListBookHistoryImpl implements ListBookHistory, Serializable {
 		//Get user
 		User user = null;
 		//no nested iterator --  iterator: any previous:any
-		for (User u : (List<User>)EntityManager.getAllInstancesOf("User"))
+		for (User u : (List<User>)EntityManager.getAllInstancesOf(User.class))
 		{
 			if (u.getUserID().equals(uid))
 			{
@@ -141,6 +165,16 @@ public class ListBookHistoryImpl implements ListBookHistory, Serializable {
 	 
 	static {opINVRelatedEntity.put("listHodingBook", Arrays.asList("User"));}
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public List<BookCopy> listOverDueBook(final Context ctx, String uid) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = listOverDueBook(uid);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<BookCopy> listOverDueBook(String uid) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -149,7 +183,7 @@ public class ListBookHistoryImpl implements ListBookHistory, Serializable {
 		//Get user
 		User user = null;
 		//no nested iterator --  iterator: any previous:any
-		for (User u : (List<User>)EntityManager.getAllInstancesOf("User"))
+		for (User u : (List<User>)EntityManager.getAllInstancesOf(User.class))
 		{
 			if (u.getUserID().equals(uid))
 			{
@@ -201,6 +235,16 @@ public class ListBookHistoryImpl implements ListBookHistory, Serializable {
 	} 
 	 
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public List<BookCopy> listReservationBook(final Context ctx, String uid) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = listReservationBook(uid);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<BookCopy> listReservationBook(String uid) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -209,7 +253,7 @@ public class ListBookHistoryImpl implements ListBookHistory, Serializable {
 		//Get user
 		User user = null;
 		//no nested iterator --  iterator: any previous:any
-		for (User u : (List<User>)EntityManager.getAllInstancesOf("User"))
+		for (User u : (List<User>)EntityManager.getAllInstancesOf(User.class))
 		{
 			if (u.getUserID().equals(uid))
 			{
@@ -252,6 +296,16 @@ public class ListBookHistoryImpl implements ListBookHistory, Serializable {
 	} 
 	 
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public List<RecommendBook> listRecommendBook(final Context ctx, String uid) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = listRecommendBook(uid);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<RecommendBook> listRecommendBook(String uid) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -260,7 +314,7 @@ public class ListBookHistoryImpl implements ListBookHistory, Serializable {
 		//Get user
 		User user = null;
 		//no nested iterator --  iterator: any previous:any
-		for (User u : (List<User>)EntityManager.getAllInstancesOf("User"))
+		for (User u : (List<User>)EntityManager.getAllInstancesOf(User.class))
 		{
 			if (u.getUserID().equals(uid))
 			{

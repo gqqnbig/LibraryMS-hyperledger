@@ -14,8 +14,12 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 import org.apache.commons.lang3.SerializationUtils;
 import java.util.Iterator;
+import org.hyperledger.fabric.shim.*;
+import org.hyperledger.fabric.contract.annotation.*;
+import org.hyperledger.fabric.contract.*;
 
-public class LibraryManagementSystemSystemImpl implements LibraryManagementSystemSystem, Serializable {
+@Contract
+public class LibraryManagementSystemSystemImpl implements LibraryManagementSystemSystem, Serializable, ContractInterface {
 	
 	
 	public static Map<String, List<String>> opINVRelatedEntity = new HashMap<String, List<String>>();
@@ -29,22 +33,32 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 
 	public void refresh() {
 		ListBookHistory listbookhistory_service = (ListBookHistory) ServiceManager
-				.getAllInstancesOf("ListBookHistory").get(0);
+				.getAllInstancesOf(ListBookHistory.class).get(0);
 		SearchBook searchbook_service = (SearchBook) ServiceManager
-				.getAllInstancesOf("SearchBook").get(0);
+				.getAllInstancesOf(SearchBook.class).get(0);
 		ManageUserCRUDService manageusercrudservice_service = (ManageUserCRUDService) ServiceManager
-				.getAllInstancesOf("ManageUserCRUDService").get(0);
+				.getAllInstancesOf(ManageUserCRUDService.class).get(0);
 		ManageBookCRUDService managebookcrudservice_service = (ManageBookCRUDService) ServiceManager
-				.getAllInstancesOf("ManageBookCRUDService").get(0);
+				.getAllInstancesOf(ManageBookCRUDService.class).get(0);
 		ManageSubjectCRUDService managesubjectcrudservice_service = (ManageSubjectCRUDService) ServiceManager
-				.getAllInstancesOf("ManageSubjectCRUDService").get(0);
+				.getAllInstancesOf(ManageSubjectCRUDService.class).get(0);
 		ManageBookCopyCRUDService managebookcopycrudservice_service = (ManageBookCopyCRUDService) ServiceManager
-				.getAllInstancesOf("ManageBookCopyCRUDService").get(0);
+				.getAllInstancesOf(ManageBookCopyCRUDService.class).get(0);
 		ManageLibrarianCRUDService managelibrariancrudservice_service = (ManageLibrarianCRUDService) ServiceManager
-				.getAllInstancesOf("ManageLibrarianCRUDService").get(0);
+				.getAllInstancesOf(ManageLibrarianCRUDService.class).get(0);
 	}			
 	
 	/* Generate buiness logic according to functional requirement */
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public boolean recommendBook(final Context ctx, String uid, String callNo, String title, String edition, String author, String publisher, String description, String isbn) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = recommendBook(uid, callNo, title, edition, author, publisher, description, isbn);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean recommendBook(String uid, String callNo, String title, String edition, String author, String publisher, String description, String isbn) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -53,7 +67,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		//Get user
 		User user = null;
 		//no nested iterator --  iterator: any previous:any
-		for (User u : (List<User>)EntityManager.getAllInstancesOf("User"))
+		for (User u : (List<User>)EntityManager.getAllInstancesOf(User.class))
 		{
 			if (u.getUserID().equals(uid))
 			{
@@ -66,7 +80,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		//Get rb
 		RecommendBook rb = null;
 		//no nested iterator --  iterator: any previous:any
-		for (RecommendBook r : (List<RecommendBook>)EntityManager.getAllInstancesOf("RecommendBook"))
+		for (RecommendBook r : (List<RecommendBook>)EntityManager.getAllInstancesOf(RecommendBook.class))
 		{
 			if (r.getCallNo().equals(callNo))
 			{
@@ -120,7 +134,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 			 && 
 			StandardOPs.includes(user.getRecommendedBook(), r)
 			 && 
-			StandardOPs.includes(((List<RecommendBook>)EntityManager.getAllInstancesOf("RecommendBook")), r)
+			StandardOPs.includes(((List<RecommendBook>)EntityManager.getAllInstancesOf(RecommendBook.class)), r)
 			 && 
 			true)) {
 				throw new PostconditionException();
@@ -142,6 +156,16 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 	 
 	static {opINVRelatedEntity.put("recommendBook", Arrays.asList("RecommendBook"));}
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public BookCopy queryBookCopy(final Context ctx, String barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = queryBookCopy(barcode);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public BookCopy queryBookCopy(String barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -150,7 +174,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		//Get bookcopy
 		BookCopy bookcopy = null;
 		//no nested iterator --  iterator: any previous:any
-		for (BookCopy boo : (List<BookCopy>)EntityManager.getAllInstancesOf("BookCopy"))
+		for (BookCopy boo : (List<BookCopy>)EntityManager.getAllInstancesOf(BookCopy.class))
 		{
 			if (boo.getBarcode().equals(barcode))
 			{
@@ -184,6 +208,16 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 	} 
 	 
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public boolean addBookCopy(final Context ctx, String callNo, String barcode, String location) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = addBookCopy(callNo, barcode, location);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean addBookCopy(String callNo, String barcode, String location) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -192,7 +226,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		//Get book
 		Book book = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Book b : (List<Book>)EntityManager.getAllInstancesOf("Book"))
+		for (Book b : (List<Book>)EntityManager.getAllInstancesOf(Book.class))
 		{
 			if (b.getCallNo().equals(callNo))
 			{
@@ -254,7 +288,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 			 && 
 			book.getCopyNum() == Pre_book.getCopyNum()+1
 			 && 
-			StandardOPs.includes(((List<BookCopy>)EntityManager.getAllInstancesOf("BookCopy")), copy)
+			StandardOPs.includes(((List<BookCopy>)EntityManager.getAllInstancesOf(BookCopy.class)), copy)
 			 && 
 			true)) {
 				throw new PostconditionException();
@@ -276,6 +310,16 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 	 
 	static {opINVRelatedEntity.put("addBookCopy", Arrays.asList("Book","BookCopy"));}
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public boolean deleteBookCopy(final Context ctx, String barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = deleteBookCopy(barcode);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean deleteBookCopy(String barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -284,7 +328,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		//Get bookcopy
 		BookCopy bookcopy = null;
 		//no nested iterator --  iterator: any previous:any
-		for (BookCopy boo : (List<BookCopy>)EntityManager.getAllInstancesOf("BookCopy"))
+		for (BookCopy boo : (List<BookCopy>)EntityManager.getAllInstancesOf(BookCopy.class))
 		{
 			if (boo.getBarcode().equals(barcode))
 			{
@@ -297,7 +341,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		/* previous state in post-condition*/
 
 		/* check precondition */
-		if (StandardOPs.oclIsundefined(bookcopy) == false && StandardOPs.includes(((List<BookCopy>)EntityManager.getAllInstancesOf("BookCopy")), bookcopy)) 
+		if (StandardOPs.oclIsundefined(bookcopy) == false && StandardOPs.includes(((List<BookCopy>)EntityManager.getAllInstancesOf(BookCopy.class)), bookcopy)) 
 		{ 
 			/* Logic here */
 			EntityManager.deleteObject("BookCopy", bookcopy);
@@ -305,7 +349,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 			
 			refresh();
 			// post-condition checking
-			if (!(StandardOPs.excludes(((List<BookCopy>)EntityManager.getAllInstancesOf("BookCopy")), bookcopy)
+			if (!(StandardOPs.excludes(((List<BookCopy>)EntityManager.getAllInstancesOf(BookCopy.class)), bookcopy)
 			 && 
 			true)) {
 				throw new PostconditionException();
@@ -327,6 +371,16 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 	 
 	static {opINVRelatedEntity.put("deleteBookCopy", Arrays.asList("BookCopy"));}
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public boolean makeReservation(final Context ctx, String uid, String barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = makeReservation(uid, barcode);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean makeReservation(String uid, String barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -335,7 +389,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		//Get user
 		User user = null;
 		//no nested iterator --  iterator: any previous:any
-		for (User u : (List<User>)EntityManager.getAllInstancesOf("User"))
+		for (User u : (List<User>)EntityManager.getAllInstancesOf(User.class))
 		{
 			if (u.getUserID().equals(uid))
 			{
@@ -348,7 +402,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		//Get copy
 		BookCopy copy = null;
 		//no nested iterator --  iterator: any previous:any
-		for (BookCopy bc : (List<BookCopy>)EntityManager.getAllInstancesOf("BookCopy"))
+		for (BookCopy bc : (List<BookCopy>)EntityManager.getAllInstancesOf(BookCopy.class))
 		{
 			if (bc.getBarcode().equals(barcode))
 			{
@@ -393,7 +447,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 			 && 
 			StandardOPs.includes(copy.getReservationRecord(), res)
 			 && 
-			StandardOPs.includes(((List<Reserve>)EntityManager.getAllInstancesOf("Reserve")), res)
+			StandardOPs.includes(((List<Reserve>)EntityManager.getAllInstancesOf(Reserve.class)), res)
 			 && 
 			true)) {
 				throw new PostconditionException();
@@ -415,6 +469,16 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 	 
 	static {opINVRelatedEntity.put("makeReservation", Arrays.asList("Reserve","BookCopy"));}
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public boolean cancelReservation(final Context ctx, String uid, String barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = cancelReservation(uid, barcode);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean cancelReservation(String uid, String barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -423,7 +487,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		//Get user
 		User user = null;
 		//no nested iterator --  iterator: any previous:any
-		for (User u : (List<User>)EntityManager.getAllInstancesOf("User"))
+		for (User u : (List<User>)EntityManager.getAllInstancesOf(User.class))
 		{
 			if (u.getUserID().equals(uid))
 			{
@@ -436,7 +500,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		//Get copy
 		BookCopy copy = null;
 		//no nested iterator --  iterator: any previous:any
-		for (BookCopy bc : (List<BookCopy>)EntityManager.getAllInstancesOf("BookCopy"))
+		for (BookCopy bc : (List<BookCopy>)EntityManager.getAllInstancesOf(BookCopy.class))
 		{
 			if (bc.getBarcode().equals(barcode))
 			{
@@ -449,7 +513,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		//Get res
 		Reserve res = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Reserve r : (List<Reserve>)EntityManager.getAllInstancesOf("Reserve"))
+		for (Reserve r : (List<Reserve>)EntityManager.getAllInstancesOf(Reserve.class))
 		{
 			if (r.getReservedCopy() == copy && r.getReservedUser() == user)
 			{
@@ -495,6 +559,16 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 	 
 	static {opINVRelatedEntity.put("cancelReservation", Arrays.asList("Reserve","BookCopy"));}
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public boolean borrowBook(final Context ctx, String uid, String barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = borrowBook(uid, barcode);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean borrowBook(String uid, String barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -503,7 +577,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		//Get user
 		User user = null;
 		//no nested iterator --  iterator: any previous:any
-		for (User u : (List<User>)EntityManager.getAllInstancesOf("User"))
+		for (User u : (List<User>)EntityManager.getAllInstancesOf(User.class))
 		{
 			if (u.getUserID().equals(uid))
 			{
@@ -516,7 +590,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		//Get stu
 		Student stu = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Student s : (List<Student>)EntityManager.getAllInstancesOf("Student"))
+		for (Student s : (List<Student>)EntityManager.getAllInstancesOf(Student.class))
 		{
 			if (s.getUserID().equals(uid))
 			{
@@ -529,7 +603,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		//Get fac
 		Faculty fac = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Faculty f : (List<Faculty>)EntityManager.getAllInstancesOf("Faculty"))
+		for (Faculty f : (List<Faculty>)EntityManager.getAllInstancesOf(Faculty.class))
 		{
 			if (f.getUserID().equals(uid))
 			{
@@ -542,7 +616,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		//Get copy
 		BookCopy copy = null;
 		//no nested iterator --  iterator: any previous:any
-		for (BookCopy bc : (List<BookCopy>)EntityManager.getAllInstancesOf("BookCopy"))
+		for (BookCopy bc : (List<BookCopy>)EntityManager.getAllInstancesOf(BookCopy.class))
 		{
 			if (bc.getBarcode().equals(barcode))
 			{
@@ -555,7 +629,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		//Get res
 		Reserve res = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Reserve r : (List<Reserve>)EntityManager.getAllInstancesOf("Reserve"))
+		for (Reserve r : (List<Reserve>)EntityManager.getAllInstancesOf(Reserve.class))
 		{
 			if (r.getReservedCopy() == copy && r.getReservedUser() == user && r.getIsReserveClosed() == false)
 			{
@@ -639,7 +713,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 			 && 
 			loan.getOverDue31Days() == false
 			 && 
-			StandardOPs.includes(((List<Loan>)EntityManager.getAllInstancesOf("Loan")), loan)
+			StandardOPs.includes(((List<Loan>)EntityManager.getAllInstancesOf(Loan.class)), loan)
 			 && 
 			true)) {
 				throw new PostconditionException();
@@ -661,6 +735,16 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 	 
 	static {opINVRelatedEntity.put("borrowBook", Arrays.asList("Reserve","Loan","BookCopy","User"));}
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public boolean renewBook(final Context ctx, String uid, String barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = renewBook(uid, barcode);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean renewBook(String uid, String barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -669,7 +753,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		//Get user
 		User user = null;
 		//no nested iterator --  iterator: any previous:any
-		for (User u : (List<User>)EntityManager.getAllInstancesOf("User"))
+		for (User u : (List<User>)EntityManager.getAllInstancesOf(User.class))
 		{
 			if (u.getUserID().equals(uid))
 			{
@@ -682,7 +766,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		//Get stu
 		Student stu = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Student s : (List<Student>)EntityManager.getAllInstancesOf("Student"))
+		for (Student s : (List<Student>)EntityManager.getAllInstancesOf(Student.class))
 		{
 			if (s.getUserID().equals(uid))
 			{
@@ -695,7 +779,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		//Get fac
 		Faculty fac = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Faculty f : (List<Faculty>)EntityManager.getAllInstancesOf("Faculty"))
+		for (Faculty f : (List<Faculty>)EntityManager.getAllInstancesOf(Faculty.class))
 		{
 			if (f.getUserID().equals(uid))
 			{
@@ -708,7 +792,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		//Get copy
 		BookCopy copy = null;
 		//no nested iterator --  iterator: any previous:any
-		for (BookCopy bc : (List<BookCopy>)EntityManager.getAllInstancesOf("BookCopy"))
+		for (BookCopy bc : (List<BookCopy>)EntityManager.getAllInstancesOf(BookCopy.class))
 		{
 			if (bc.getBarcode().equals(barcode) && bc.getStatus() == CopyStatus.LOANED)
 			{
@@ -721,7 +805,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		//Get loan
 		Loan loan = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Loan l : (List<Loan>)EntityManager.getAllInstancesOf("Loan"))
+		for (Loan l : (List<Loan>)EntityManager.getAllInstancesOf(Loan.class))
 		{
 			if (l.getLoanedUser() == user && l.getLoanedCopy() == copy)
 			{
@@ -795,6 +879,16 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 	 
 	static {opINVRelatedEntity.put("renewBook", Arrays.asList("Loan"));}
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public boolean returnBook(final Context ctx, String barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = returnBook(barcode);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean returnBook(String barcode) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -803,7 +897,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		//Get copy
 		BookCopy copy = null;
 		//no nested iterator --  iterator: any previous:any
-		for (BookCopy bc : (List<BookCopy>)EntityManager.getAllInstancesOf("BookCopy"))
+		for (BookCopy bc : (List<BookCopy>)EntityManager.getAllInstancesOf(BookCopy.class))
 		{
 			if (bc.getBarcode().equals(barcode) && bc.getStatus() == CopyStatus.LOANED)
 			{
@@ -816,7 +910,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		//Get loan
 		Loan loan = null;
 		//no nested iterator --  iterator: any previous:any
-		for (Loan l : (List<Loan>)EntityManager.getAllInstancesOf("Loan"))
+		for (Loan l : (List<Loan>)EntityManager.getAllInstancesOf(Loan.class))
 		{
 			if (l.getLoanedCopy() == copy && l.getIsReturned() == false)
 			{
@@ -829,7 +923,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		//Get loans
 		List<Loan> loans = new LinkedList<>();
 		//no nested iterator --  iterator: select previous:select
-		for (Loan l : (List<Loan>)EntityManager.getAllInstancesOf("Loan"))
+		for (Loan l : (List<Loan>)EntityManager.getAllInstancesOf(Loan.class))
 		{
 			if (l.getLoanedUser() == loan.getLoanedUser() && l.getIsReturned() == false && l.getDueDate().isAfter(LocalDate.now()))
 			{
@@ -907,6 +1001,16 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 	 
 	static {opINVRelatedEntity.put("returnBook", Arrays.asList("Loan","BookCopy"));}
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public boolean payOverDueFee(final Context ctx, String uid, float fee) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		var res = payOverDueFee(uid, fee);
+		return res;
+	}
+
 	@SuppressWarnings("unchecked")
 	public boolean payOverDueFee(String uid, float fee) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -915,7 +1019,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		//Get user
 		User user = null;
 		//no nested iterator --  iterator: any previous:any
-		for (User u : (List<User>)EntityManager.getAllInstancesOf("User"))
+		for (User u : (List<User>)EntityManager.getAllInstancesOf(User.class))
 		{
 			if (u.getUserID().equals(uid))
 			{
@@ -928,7 +1032,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		//Get loans
 		List<Loan> loans = new LinkedList<>();
 		//no nested iterator --  iterator: select previous:select
-		for (Loan l : (List<Loan>)EntityManager.getAllInstancesOf("Loan"))
+		for (Loan l : (List<Loan>)EntityManager.getAllInstancesOf(Loan.class))
 		{
 			if (l.getLoanedUser() == user && l.getDueDate().isBefore(LocalDate.now()) && l.getIsReturned() == true && l.getOverDueFee() > 0)
 			{
@@ -984,6 +1088,15 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 	 
 	static {opINVRelatedEntity.put("payOverDueFee", Arrays.asList("Loan","User"));}
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public void checkOverDueandComputeOverDueFee(final Context ctx) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		checkOverDueandComputeOverDueFee();
+	}
+
 	@SuppressWarnings("unchecked")
 	public void checkOverDueandComputeOverDueFee() throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -992,7 +1105,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		//Get loans
 		List<Loan> loans = new LinkedList<>();
 		//no nested iterator --  iterator: select previous:select
-		for (Loan loan : (List<Loan>)EntityManager.getAllInstancesOf("Loan"))
+		for (Loan loan : (List<Loan>)EntityManager.getAllInstancesOf(Loan.class))
 		{
 			if (loan.getIsReturned() == false && loan.getDueDate().isBefore(LocalDate.now()))
 			{
@@ -1112,6 +1225,15 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 	 
 	static {opINVRelatedEntity.put("checkOverDueandComputeOverDueFee", Arrays.asList("Loan"));}
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public void dueSoonNotification(final Context ctx) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		dueSoonNotification();
+	}
+
 	@SuppressWarnings("unchecked")
 	public void dueSoonNotification() throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -1120,7 +1242,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		//Get users
 		List<User> users = new LinkedList<>();
 		//has nested iterator	
-		for (User user : (List<User>)EntityManager.getAllInstancesOf("User"))
+		for (User user : (List<User>)EntityManager.getAllInstancesOf(User.class))
 		{
 			//nested for here:
 			//no nested iterator --  iterator: exists previous:select
@@ -1173,6 +1295,15 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 	 
 	static {opINVRelatedEntity.put("dueSoonNotification", Arrays.asList("User"));}
 	
+	
+	@Transaction(intent = Transaction.TYPE.SUBMIT)
+	public void countDownSuspensionDay(final Context ctx) throws PreconditionException, PostconditionException, ThirdPartyServiceException {
+		ChaincodeStub stub = ctx.getStub();
+		EntityManager.setStub(stub);
+
+		countDownSuspensionDay();
+	}
+
 	@SuppressWarnings("unchecked")
 	public void countDownSuspensionDay() throws PreconditionException, PostconditionException, ThirdPartyServiceException {
 		
@@ -1181,7 +1312,7 @@ public class LibraryManagementSystemSystemImpl implements LibraryManagementSyste
 		//Get users
 		List<User> users = new LinkedList<>();
 		//no nested iterator --  iterator: select previous:select
-		for (User u : (List<User>)EntityManager.getAllInstancesOf("User"))
+		for (User u : (List<User>)EntityManager.getAllInstancesOf(User.class))
 		{
 			if (u.getSuspensionDays() > 0)
 			{
