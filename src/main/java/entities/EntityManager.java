@@ -639,5 +639,115 @@ public class EntityManager {
 		AllInstance.put("Subject", SubjectInstances);
 		AllInstance.put("User", UserInstances);
 	}
+
+	public static Administrator getAdministratorByPK(Object pk) {
+		if (pk == null)
+			return null;
+		for (var i : EntityManager.getAllInstancesOf(Administrator.class)) {
+			if (Objects.equals(i.getPK(), pk))
+				return i;
+		}
+		return null;
+	}
+
+	public static Book getBookByPK(Object pk) {
+		if (pk == null)
+			return null;
+		for (var i : EntityManager.getAllInstancesOf(Book.class)) {
+			if (Objects.equals(i.getPK(), pk))
+				return i;
+		}
+		return null;
+	}
+
+	public static BookCopy getBookCopyByPK(Object pk) {
+		if (pk == null)
+			return null;
+		for (var i : EntityManager.getAllInstancesOf(BookCopy.class)) {
+			if (Objects.equals(i.getPK(), pk))
+				return i;
+		}
+		return null;
+	}
+
+	public static Faculty getFacultyByPK(Object pk) {
+		if (pk == null)
+			return null;
+		for (var i : EntityManager.getAllInstancesOf(Faculty.class)) {
+			if (Objects.equals(i.getPK(), pk))
+				return i;
+		}
+		return null;
+	}
+
+	public static Librarian getLibrarianByPK(Object pk) {
+		if (pk == null)
+			return null;
+		for (var i : EntityManager.getAllInstancesOf(Librarian.class)) {
+			if (Objects.equals(i.getPK(), pk))
+				return i;
+		}
+		return null;
+	}
+
+	public static Loan getLoanByPK(Object pk) {
+		if (pk == null)
+			return null;
+		for (var i : EntityManager.getAllInstancesOf(Loan.class)) {
+			if (Objects.equals(i.getPK(), pk))
+				return i;
+		}
+		return null;
+	}
+
+	public static RecommendBook getRecommendBookByPK(Object pk) {
+		if (pk == null)
+			return null;
+		for (var i : EntityManager.getAllInstancesOf(RecommendBook.class)) {
+			if (Objects.equals(i.getPK(), pk))
+				return i;
+		}
+		return null;
+	}
+
+	public static Reserve getReserveByPK(Object pk) {
+		if (pk == null)
+			return null;
+		for (var i : EntityManager.getAllInstancesOf(Reserve.class)) {
+			if (Objects.equals(i.getPK(), pk))
+				return i;
+		}
+		return null;
+	}
+
+	public static Student getStudentByPK(Object pk) {
+		if (pk == null)
+			return null;
+		for (var i : EntityManager.getAllInstancesOf(Student.class)) {
+			if (Objects.equals(i.getPK(), pk))
+				return i;
+		}
+		return null;
+	}
+
+	public static Subject getSubjectByPK(Object pk) {
+		if (pk == null)
+			return null;
+		for (var i : EntityManager.getAllInstancesOf(Subject.class)) {
+			if (Objects.equals(i.getPK(), pk))
+				return i;
+		}
+		return null;
+	}
+
+	public static User getUserByPK(Object pk) {
+		if (pk == null)
+			return null;
+		for (var i : EntityManager.getAllInstancesOf(User.class)) {
+			if (Objects.equals(i.getPK(), pk))
+				return i;
+		}
+		return null;
+	}
 }
 
